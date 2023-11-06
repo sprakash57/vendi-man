@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import { userValidator } from '../middleware/users';
-import { createUserController } from '../controller/users';
+import { isUserAvailable, userValidator } from '../middleware/users';
+import { getUserController, newUserController } from '../controller/users';
+import { validate } from '../utils/validateRequest';
+import { deleteAllSessionController } from '../controller/sessions';
 
 const router = Router();
 
-router.post('/', userValidator, createUserController);
+router.post('/', validate(userValidator), newUserController);
+
+router.get('/profile', isUserAvailable, getUserController);
+
+router.get('/logout/all', isUserAvailable, deleteAllSessionController);
 
 export default router;

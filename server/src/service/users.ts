@@ -1,6 +1,7 @@
 import { FilterQuery, UpdateQuery, QueryOptions } from 'mongoose';
 import UserModel, { UserInput, UserDocument } from '../model/users';
-import { omit } from '../utils/helpers';
+import { omit } from 'lodash';
+import { SessionInput } from '../types';
 
 export const createUser = async (input: UserInput) => {
   try {
@@ -23,11 +24,9 @@ export const findAndUpdateUser = async (
   return UserModel.findOneAndUpdate(query, update, options);
 };
 
-export const validatePassword = async ({ username, password }: { username: string; password: string }) => {
+export const checkPassword = async ({ username, password }: SessionInput) => {
   const user = await UserModel.findOne({ username });
-  if (!user) {
-    return false;
-  }
+  if (!user) return null;
   const isValid = await user.comparePassword(password);
   if (!isValid) return false;
   return omit(user.toJSON(), 'password');

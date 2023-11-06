@@ -3,7 +3,8 @@ import morgan from 'morgan';
 import config from 'config';
 import cors from 'cors';
 import routes from './routes';
-import { connectDb } from './utils';
+import connectDb from './utils/connectDb';
+import authAndRefreshToken from './utils/authAndRefreshToken';
 
 const PORT = config.get('port');
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 
+app.use(authAndRefreshToken);
 app.use('/api/v1', routes);
 
 app.use('*', (_req: Request, res: Response) => {

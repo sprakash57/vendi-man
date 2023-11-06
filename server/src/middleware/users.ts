@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
 
 export const userValidator = [
@@ -11,3 +12,14 @@ export const userValidator = [
   }),
   body('role', 'Invalid role').isIn(['buyer', 'seller']),
 ];
+
+export const isUserAvailable = (req: Request, res: Response, next: NextFunction) => {
+  const user = res.locals.user;
+  if (!user) {
+    return res.status(401).json({
+      status: 'error',
+      message: 'Unauthorized',
+    });
+  }
+  return next();
+};

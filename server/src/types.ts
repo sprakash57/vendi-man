@@ -13,3 +13,8 @@ export type UserCreationInput = Omit<
 export type UserDepositInput = {
   depositAmount: number;
 };
+
+export type SessionInput = {
+  username: string;
+  password: string;
+};
