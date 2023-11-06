@@ -23,8 +23,8 @@ const authAndRefreshToken = async (req: Request, res: Response, next: NextFuncti
     if (newAccessToken) {
       res.setHeader('x-access-token', newAccessToken);
     }
-
     const result = verifyToken(newAccessToken as string, 'accessTokenPublicKey');
+
     res.locals.user = result.verifiedToken;
     return next();
   }

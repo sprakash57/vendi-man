@@ -3,6 +3,7 @@ import SessionModel, { SessionDocument } from '../model/sessions';
 import { signToken, verifyToken } from '../utils/jwt';
 import { findUser } from './users';
 import { get } from 'lodash';
+import config from 'config';
 
 export const createSession = async (userId: string, userAgent: string) => {
   const session = await SessionModel.create({ user: userId, userAgent });
@@ -30,7 +31,7 @@ export const getNewAccessToken = async (refreshToken: string) => {
   if (!user) return false;
 
   const newAccessToken = signToken({ ...user, session: session._id }, 'accessTokenPrivateKey', {
-    expiresIn: process.env.accessTokenTtl,
+    expiresIn: config.get('accessTokenValidity'),
   });
 
   return newAccessToken;

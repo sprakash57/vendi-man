@@ -1,5 +1,3 @@
-import { userValidator } from './middleware/users';
-
 export type UserCreationInput = Omit<
   {
     username: string;
@@ -10,7 +8,7 @@ export type UserCreationInput = Omit<
   'passwordConfirmation'
 >;
 
-export type UserDepositInput = {
+export type DepositValidatorInput = {
   depositAmount: number;
 };
 

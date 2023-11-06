@@ -25,7 +25,6 @@ export const verifyToken = (token: string, keyName: KeyName) => {
       verifiedToken,
     };
   } catch (error) {
-    console.error(JSON.stringify(error));
     return {
       valid: false,
       expired: (error as { message: string }).message === TOKEN_EXPIRED,

@@ -21,7 +21,7 @@ export const createSessionController = async (req: Request, res: Response) => {
     });
     return res.json({
       status: 'success',
-      message: Messages.STATUS_200,
+      message: Messages.SUCCESS,
       data: { message: sessions.length ? Messages.DUPLICATE_SESSION : '', accessToken, refreshToken },
     });
   } catch (error) {
@@ -36,7 +36,7 @@ export const getSessionController = async (req: Request, res: Response) => {
     const sessions = await findSessions({ user: userId, valid: true });
     return res.json({
       status: 'success',
-      message: Messages.STATUS_200,
+      message: Messages.SUCCESS,
       data: sessions,
     });
   } catch (error: any) {
@@ -51,7 +51,7 @@ export const deleteSessionController = async (req: Request, res: Response) => {
     await updateSession({ _id: sessionId }, { valid: false });
     return res.json({
       status: 'success',
-      message: Messages.STATUS_200,
+      message: Messages.SUCCESS,
       data: {
         accessToken: null,
         refreshToken: null,
