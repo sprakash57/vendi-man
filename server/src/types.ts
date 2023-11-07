@@ -2,10 +2,10 @@ export type UserCreationInput = Omit<
   {
     username: string;
     password: string;
-    passwordConfirmation: string;
+    confirmPassword: string;
     role: 'buyer' | 'seller';
   },
-  'passwordConfirmation'
+  'confirmPassword'
 >;
 
 export type DepositValidatorInput = {

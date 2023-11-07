@@ -5,7 +5,7 @@ import { Messages, VALID_COINS } from '../constants';
 export const userValidator = [
   body('username', 'Name is required').notEmpty(),
   body('password', 'Password is required').isLength({ min: 6 }).withMessage('Password is too short'),
-  body('passwordConfirmation', 'Password confirmation is required').custom((value, { req }) => {
+  body('confirmPassword', 'Password confirmation is required').custom((value, { req }) => {
     if (value !== req.body.password) {
       throw new Error('Passwords do not match');
     }
