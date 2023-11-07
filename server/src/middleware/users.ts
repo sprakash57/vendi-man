@@ -42,7 +42,17 @@ export const buyerVerification = (req: Request, res: Response, next: NextFunctio
   if (!user) {
     return res.status(401).json({ status: 'error', message: Messages.EXPIRED_SESSION });
   } else if (user.role !== 'buyer') {
-    return res.status(403).json({ status: 'error', message: Messages.FORBIDDEN_USER });
+    return res.status(403).json({ status: 'error', message: Messages.NO_BUYER });
+  }
+  return next();
+};
+
+export const sellerVerification = (req: Request, res: Response, next: NextFunction) => {
+  const user = res.locals.user;
+  if (!user) {
+    return res.status(401).json({ status: 'error', message: Messages.EXPIRED_SESSION });
+  } else if (user.role !== 'seller') {
+    return res.status(403).json({ status: 'error', message: Messages.NO_SELLER });
   }
   return next();
 };

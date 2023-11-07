@@ -10,7 +10,7 @@ export const newUserController = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       status: 'success',
-      message: Messages.USER_CREATION_SUCCESS,
+      message: Messages.USER_CREATED,
       data: data,
     });
   } catch (error) {

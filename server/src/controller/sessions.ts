@@ -74,7 +74,7 @@ export const deleteAllSessionController = async (req: Request, res: Response) =>
     });
     return res.json({
       status: 'success',
-      message: Messages.USER_LOGOUT_SUCCESS,
+      message: Messages.SUCCESS,
     });
   } catch (error: any) {
     console.log(error);
