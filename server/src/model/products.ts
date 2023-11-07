@@ -2,8 +2,6 @@ import mongoose from 'mongoose';
 import { UserDocument } from './users';
 import crypto from 'crypto';
 
-const uniqueString = crypto.randomBytes(10).toString('hex');
-
 export interface ProductInput {
   user: UserDocument['_id'];
   productName: string;
@@ -20,9 +18,7 @@ const productSchema = new mongoose.Schema(
   {
     productId: {
       type: String,
-      required: true,
       unique: true,
-      default: () => `${uniqueString}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     productName: { type: String, required: true },
@@ -33,6 +29,13 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+productSchema.pre('save', function (next) {
+  if (!this.productId) {
+    this.productId = crypto.randomBytes(6).toString('hex');
+  }
+  next();
+});
 
 const ProductModel = mongoose.model<ProductDocument>('Product', productSchema);
 

@@ -59,8 +59,8 @@ export const resetDepositController = async (_: Request, res: Response) => {
   try {
     const userId = res.locals.user._id;
     const updatedUser = await findAndUpdateUser({ _id: userId }, { deposit: 0 }, { new: true });
-
-    return res.status(201).json({ status: 'success', message: Messages.SUCCESS, data: updatedUser });
+    const data = omit(updatedUser?.toJSON(), ['password', '_id']);
+    return res.status(201).json({ status: 'success', message: Messages.SUCCESS, data });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: 'error', message: Messages.STATUS_500 });

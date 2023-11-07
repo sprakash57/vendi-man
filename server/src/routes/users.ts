@@ -11,6 +11,6 @@ router.get('/profile', userVerification, getUserController);
 
 router.post('/deposit', [...validate(depositValidator), userVerification], depositController);
 
-router.put('/deposit', buyerVerification, resetDepositController);
+router.delete('/deposit', buyerVerification, resetDepositController);
 
 export default router;

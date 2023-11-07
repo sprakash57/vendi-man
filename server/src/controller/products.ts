@@ -14,8 +14,7 @@ import ProductModel from '../model/products';
 export const createProductController = async (req: Request, res: Response) => {
   try {
     const sellerId = res.locals.user._id;
-    const body = req.body;
-    const product = await createProduct({ ...body, user: sellerId });
+    const product = await createProduct({ ...req.body, user: sellerId });
     return res.json({ status: 'success', message: Messages.SUCCESS, data: product });
   } catch (error) {
     console.log(error);
@@ -116,7 +115,7 @@ export const buyProductController = async (req: Request, res: Response) => {
 
     const balance = user?.deposit ? Number(user.deposit) - totalSpent : 0;
 
-    await findAndUpdateUser({ _id: userId }, { deposit: 0 }, { new: false });
+    await findAndUpdateUser({ _id: userId }, { deposit: balance }, { new: false });
 
     await findAndUpdateProduct(
       { productId },
@@ -140,6 +139,7 @@ export const getAllProductsController = async (req: Request, res: Response) => {
   try {
     const products = await findAllProducts(ProductModel, page, limit);
     const count = await ProductModel.countDocuments();
+
     return res.json({
       status: 200,
       message: 'success',

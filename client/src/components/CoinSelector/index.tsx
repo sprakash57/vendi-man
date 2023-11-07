@@ -7,12 +7,10 @@ const CoinSelector = ({
   setDeposit: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const handleCoinClick = (value: number) => {
-    if (deposit + value <= 1000 && deposit + value >= 0) {
+    if (deposit + value <= 100 && deposit + value >= 0) {
       setDeposit(deposit + value);
     }
   };
-
-  const depositNotAllowed = [5, 10, 20, 50, 100].every(coin => deposit + coin > 1000);
 
   return (
     <section className={s.coins}>
@@ -44,8 +42,6 @@ const CoinSelector = ({
           <button onClick={() => handleCoinClick(100)}>+</button>
         </div>
       </div>
-
-      {depositNotAllowed && <p>Maximum allowed deposit is 1000</p>}
     </section>
   );
 };
