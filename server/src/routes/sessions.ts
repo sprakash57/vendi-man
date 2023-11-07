@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { sessionValidator } from '../middleware/sessions';
-import { createSessionController, deleteSessionController, getSessionController } from '../controller/sessions';
+import {
+  createSessionController,
+  deleteAllSessionController,
+  deleteSessionController,
+  getSessionController,
+} from '../controller/sessions';
 import { userVerification } from '../middleware/users';
 import { validate } from '../utils/validateRequest';
 
@@ -10,6 +15,8 @@ router.post('/', validate(sessionValidator), createSessionController);
 
 router.get('/', userVerification, getSessionController);
 
-router.delete('/', userVerification, deleteSessionController);
+router.put('/logout', userVerification, deleteSessionController);
+
+router.put('/logout/all', userVerification, deleteAllSessionController);
 
 export default router;

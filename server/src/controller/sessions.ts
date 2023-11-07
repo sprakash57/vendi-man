@@ -11,14 +11,17 @@ export const createSessionController = async (req: Request, res: Response) => {
     if (!user) return res.status(401).json({ status: 'error', message: Messages.STATUS_400 });
 
     const sessions = await findSessions({ user: user._id, valid: true });
-    console.log({ sessions });
+
     const session = await createSession(user._id, req.get('user-agent') || '');
+
     const accessToken = signToken({ ...user, session: session._id }, 'accessTokenPrivateKey', {
       expiresIn: config.get('accessTokenValidity'),
     });
+
     const refreshToken = signToken({ ...user, session: session._id }, 'refreshTokenPrivateKey', {
       expiresIn: config.get('refreshTokenValidity'),
     });
+
     return res.json({
       status: 'success',
       message: Messages.SUCCESS,
@@ -39,13 +42,13 @@ export const getSessionController = async (req: Request, res: Response) => {
       message: Messages.SUCCESS,
       data: sessions,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
   }
 };
 
-export const deleteSessionController = async (req: Request, res: Response) => {
+export const deleteSessionController = async (_req: Request, res: Response) => {
   try {
     const sessionId = res.locals.user.session;
     await updateSession({ _id: sessionId }, { valid: false });
@@ -57,26 +60,20 @@ export const deleteSessionController = async (req: Request, res: Response) => {
         refreshToken: null,
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
   }
 };
 
-export const deleteAllSessionController = async (req: Request, res: Response) => {
+export const deleteAllSessionController = async (_req: Request, res: Response) => {
   try {
-    const sessions = await findSessions({
-      user: res.locals.user._id,
-      valid: true,
-    });
-    sessions.map(async session => {
+    const sessions = await findSessions({ user: res.locals.user._id, valid: true });
+    sessions.forEach(async session => {
       await updateSession({ _id: session._id }, { valid: false });
     });
-    return res.json({
-      status: 'success',
-      message: Messages.SUCCESS,
-    });
-  } catch (error: any) {
+    return res.json({ status: 'success', message: Messages.SUCCESS });
+  } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
   }
