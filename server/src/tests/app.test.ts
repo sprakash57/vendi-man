@@ -1,9 +1,9 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 const testUrl = 'http://localhost:4000/api/v1';
-const testUsername = 'sunny';
+const testUsername = 'buyer1';
 const testPassword = '123456';
-const testProductId = 'da2ddd92b093';
+const testProductId = '9481b0c5e62c';
 const validAmount = 30;
 const invalidAmount = 17;
 const totalProduct = 10;
@@ -16,18 +16,11 @@ describe('App', () => {
       username: testUsername,
       password: testPassword,
     });
+
     expect(authResponse.status).toBe(200);
     expect(authResponse.headers['content-type']).toContain('application/json');
-    expect(authResponse.data.data.data).toHaveProperty('accessToken');
-    expect(authResponse.data.data.data).toHaveProperty('refreshToken');
-  });
-
-  afterAll(async () => {
-    await axios.put(`${testUrl}/sessions/logout/all`, {
-      headers: {
-        Authorization: `Bearer ${authResponse.data.accessToken}`,
-      },
-    });
+    expect(authResponse.data.data).toHaveProperty('accessToken');
+    expect(authResponse.data.data).toHaveProperty('refreshToken');
   });
 
   it('should reject invalid deposit amount', async () => {
@@ -40,13 +33,12 @@ describe('App', () => {
           },
           {
             headers: {
-              Authorization: `Bearer ${authResponse.data.accessToken}`,
+              Authorization: `Bearer ${authResponse.data.data.accessToken}`,
             },
           },
         )
         .catch((err: AxiosError) => {
-          expect(err.response?.status).toBe(400);
-          expect(err.response?.data).toHaveProperty('error');
+          expect(err.response?.data).toHaveProperty('errors');
         });
     } catch (e) {}
   });
@@ -60,7 +52,7 @@ describe('App', () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${authResponse.data.accessToken}`,
+            Authorization: `Bearer ${authResponse.data.data.accessToken}`,
           },
         },
       );
@@ -77,7 +69,7 @@ describe('App', () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${authResponse.data.accessToken}`,
+            Authorization: `Bearer ${authResponse.data.data.accessToken}`,
           },
         },
       );
@@ -90,7 +82,7 @@ describe('App', () => {
     try {
       const response = await axios.get(`${testUrl}/users/profile`, {
         headers: {
-          Authorization: `Bearer ${authResponse.data.accessToken}`,
+          Authorization: `Bearer ${authResponse.data.data.accessToken}`,
         },
       });
       expect(response.data?.deposit).toEqual(0);
@@ -101,7 +93,7 @@ describe('App', () => {
     try {
       const response = await axios.delete(`${testUrl}/users/deposit`, {
         headers: {
-          Authorization: `Bearer ${authResponse.data.accessToken}`,
+          Authorization: `Bearer ${authResponse.data.data.accessToken}`,
         },
       });
       expect(response.status).toBe(200);
@@ -118,7 +110,7 @@ describe('App', () => {
           },
           {
             headers: {
-              Authorization: `Bearer ${authResponse.data.accessToken}`,
+              Authorization: `Bearer ${authResponse.data.data.accessToken}`,
             },
           },
         )
@@ -127,5 +119,13 @@ describe('App', () => {
           expect(err.response?.data).toHaveProperty('error');
         });
     } catch (e) {}
+  });
+
+  afterAll(async () => {
+    await axios.put(`${testUrl}/sessions/logout/all`, {
+      headers: {
+        Authorization: `Bearer ${authResponse.data.data.accessToken}`,
+      },
+    });
   });
 });

@@ -4,6 +4,7 @@ import { signToken, verifyToken } from '../utils/jwt';
 import { findUser } from './users';
 import { get } from 'lodash';
 import config from 'config';
+import { JwtPayload } from 'jsonwebtoken';
 
 export const createSession = async (userId: string, userAgent: string) => {
   const session = await SessionModel.create({ user: userId, userAgent });
@@ -35,4 +36,9 @@ export const getNewAccessToken = async (refreshToken: string) => {
   });
 
   return newAccessToken;
+};
+
+export const checkSession = async (verifiedToken: string | JwtPayload | null) => {
+  const session = await SessionModel.findById(get(verifiedToken, 'session'));
+  return session?.valid;
 };

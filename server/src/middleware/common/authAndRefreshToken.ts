@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from './jwt';
-import { getNewAccessToken } from '../service/sessions';
+import { verifyToken } from '../../utils/jwt';
+import { checkSession, getNewAccessToken } from '../../service/sessions';
 
 const authAndRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const accessToken = (req.headers.authorization ?? '').replace(/^Bearer\s/, '');
@@ -11,9 +11,11 @@ const authAndRefreshToken = async (req: Request, res: Response, next: NextFuncti
   }
 
   const { verifiedToken, expired } = verifyToken(accessToken, 'accessTokenPublicKey');
-
   if (verifiedToken) {
-    res.locals.user = verifiedToken;
+    const sessionIsValid = await checkSession(verifiedToken);
+    if (sessionIsValid) {
+      res.locals.user = verifiedToken;
+    }
     return next();
   }
 
@@ -25,7 +27,10 @@ const authAndRefreshToken = async (req: Request, res: Response, next: NextFuncti
     }
     const result = verifyToken(newAccessToken as string, 'accessTokenPublicKey');
 
-    res.locals.user = result.verifiedToken;
+    const sessionIsValid = await checkSession(verifiedToken);
+    if (sessionIsValid) {
+      res.locals.user = result.verifiedToken;
+    }
     return next();
   }
 
