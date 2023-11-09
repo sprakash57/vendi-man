@@ -1,4 +1,4 @@
-import s from './index.module.css';
+import s from './index.module.scss';
 const CoinSelector = ({
   deposit = 0,
   setDeposit,
@@ -14,32 +14,52 @@ const CoinSelector = ({
 
   return (
     <section className={s.coins}>
-      <p>{!!deposit && `Deposit: ${deposit}`}</p>
-      <div>
+      <p>{`Deposit: ${deposit}`}</p>
+      <div className={s.coins__button}>
         <div className={s.coin}>
-          <button onClick={() => handleCoinClick(-5)}>-</button>
+          <button type='button' onClick={() => handleCoinClick(-5)}>
+            -
+          </button>
           <span>5</span>
-          <button onClick={() => handleCoinClick(5)}>+</button>
+          <button type='button' onClick={() => handleCoinClick(5)}>
+            +
+          </button>
         </div>
         <div className={s.coin}>
-          <button onClick={() => handleCoinClick(-10)}>-</button>
+          <button type='button' onClick={() => handleCoinClick(-10)}>
+            -
+          </button>
           <span>10</span>
-          <button onClick={() => handleCoinClick(10)}>+</button>
+          <button type='button' onClick={() => handleCoinClick(10)}>
+            +
+          </button>
         </div>
         <div className={s.coin}>
-          <button onClick={() => handleCoinClick(-20)}>-</button>
+          <button type='button' onClick={() => handleCoinClick(-20)}>
+            -
+          </button>
           <span>20</span>
-          <button onClick={() => handleCoinClick(20)}>+</button>
+          <button type='button' onClick={() => handleCoinClick(20)}>
+            +
+          </button>
         </div>
         <div className={s.coin}>
-          <button onClick={() => handleCoinClick(-50)}>-</button>
+          <button type='button' onClick={() => handleCoinClick(-50)}>
+            -
+          </button>
           <span>50</span>
-          <button onClick={() => handleCoinClick(50)}>+</button>
+          <button type='button' onClick={() => handleCoinClick(50)}>
+            +
+          </button>
         </div>
         <div className={s.coin}>
-          <button onClick={() => handleCoinClick(-100)}>-</button>
+          <button type='button' onClick={() => handleCoinClick(-100)}>
+            -
+          </button>
           <span>100</span>
-          <button onClick={() => handleCoinClick(100)}>+</button>
+          <button type='button' onClick={() => handleCoinClick(100)}>
+            +
+          </button>
         </div>
       </div>
     </section>

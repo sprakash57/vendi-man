@@ -1,0 +1,23 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: teal;
+  h3 {
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+  }
+  &__items {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+  }
+}
+
+.container {
+  padding: 0 2rem;
+}

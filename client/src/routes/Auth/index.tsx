@@ -1,102 +1,100 @@
 import React, { useState } from 'react';
-import styles from './index.module.css';
-import CoinSelector from '../../components/CoinSelector';
-
-interface Payload {
-  username: string;
-  password: string;
-  confirmPassword: string;
-  deposit: number;
-  role: string;
-}
+import CoinSelector from '@/components/CoinSelector';
+import s from './index.module.scss';
+import { useAuthContext } from '@/contexts/auth';
+import { nonAuthApi } from '@/utils/api';
+import Branding from '@/components/Branding';
 
 const Auth = () => {
-  const [iseNewUser, setIsNewUser] = useState(false);
+  const [iseNewUser, setIsNewUser] = useState(true);
   const [deposit, setDeposit] = useState(0);
-  const [status, setStatus] = useState('');
-  const [credentials, setCredentials] = useState({
+  const [userData, setUserData] = useState({
     username: '',
     password: '',
     confirmPassword: '',
     role: 'buyer',
   });
-
-  const resetForm = () => {
-    setIsNewUser(false);
-  };
-
-  const createNewUser = async (payload: Payload) => {
-    try {
-      const response = await fetch('http://localhost:4000/api/v1/users', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      await response.json();
-      resetForm();
-      setStatus('success');
-    } catch (error) {
-      console.error(error);
-      setStatus('error');
-    }
-  };
+  const { login } = useAuthContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCredentials(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setUserData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const toggleAuthPage = () => {
     setIsNewUser(prev => !prev);
   };
 
-  const handleNewUser = () => {
-    const payload = { ...credentials, deposit };
-    createNewUser(payload);
+  const handleLogin = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (iseNewUser) {
+      try {
+        await nonAuthApi.post('/users', { ...userData, deposit });
+        setIsNewUser(false);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      login({ username: userData.username, password: userData.password });
+    }
   };
 
   return (
-    <section className={styles.form}>
-      <label className={styles.form__fields}>
-        Username:
-        <input type='text' name='username' value={credentials.username} onChange={handleChange} />
-      </label>
-      <label className={styles.form__fields}>
-        Password:
-        <input type='password' name='password' value={credentials.password} onChange={handleChange} />
-      </label>
-      {iseNewUser && (
-        <>
-          <label className={styles.form__fields}>
-            Confirm Password:
-            <input type='password' name='confirmPassword' value={credentials.confirmPassword} onChange={handleChange} />
-          </label>
-          <div>
-            <p>What is your role?</p>
-            <label className={styles.form__fields}>
-              <input type='radio' value='buyer' name='role' checked={credentials.role === 'buyer'} onChange={handleChange} />
-              Buyer
-            </label>
-            <label className={styles.form__fields}>
+    <>
+      <Branding />
+      <form className={s.form} onSubmit={handleLogin}>
+        <h3>Create Account</h3>
+        <div className={s.form__fields}>
+          <input placeholder='Username' type='text' name='username' value={userData.username} onChange={handleChange} />
+          <input placeholder='Password' type='password' name='password' value={userData.password} onChange={handleChange} />
+          {iseNewUser && (
+            <>
               <input
-                type='radio'
-                value='seller'
-                name='role'
-                checked={credentials.role === 'seller'}
+                placeholder='Confirm Password'
+                type='text'
+                name='consfirmPassword'
+                value={userData.confirmPassword}
                 onChange={handleChange}
               />
-              Seller
-            </label>
+              <div>
+                <p>Select role</p>
+                <div className={s.role}>
+                  <label>
+                    <input
+                      type='radio'
+                      name='role'
+                      value='buyer'
+                      checked={userData.role === 'buyer'}
+                      onChange={handleChange}
+                    />
+                    Buyer
+                  </label>
+                  <label>
+                    <input
+                      type='radio'
+                      name='role'
+                      value='seller'
+                      checked={userData.role === 'seller'}
+                      onChange={handleChange}
+                    />
+                    Seller
+                  </label>
+                </div>
+              </div>
+              <CoinSelector deposit={deposit} setDeposit={setDeposit} />
+            </>
+          )}
+          <hr className={s.divider} />
+          <div className={s.form__actions}>
+            <button type='submit' data-variant='primary'>
+              {iseNewUser ? 'Register' : 'Login'}
+            </button>
+            <button type='button' onClick={toggleAuthPage}>
+              {iseNewUser ? 'Already registered' : 'New User'}?
+            </button>
           </div>
-          <CoinSelector deposit={deposit} setDeposit={setDeposit} />
-        </>
-      )}
-      <button onClick={handleNewUser}>{iseNewUser ? 'Register' : 'Login'}</button>
-      <button onClick={toggleAuthPage}>{iseNewUser ? 'Already registered' : 'New User'}?</button>
-      {status === 'success' && <p>Successfully registered</p>}
-      {status === 'error' && <p>Something went wrong. Please try again</p>}
-    </section>
+        </div>
+      </form>
+    </>
   );
 };
 

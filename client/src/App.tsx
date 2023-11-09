@@ -1,10 +1,17 @@
-import AppRoutes from './routes';
+import { BrowserRouter } from 'react-router-dom';
+import Layout from '@/components/shared/Layout';
+import AppRoutes from '@/routes';
+import { AuthContextProvider } from './contexts/auth';
 
 function App() {
   return (
-    <main>
-      <AppRoutes />
-    </main>
+    <BrowserRouter>
+      <AuthContextProvider>
+        <Layout>
+          <AppRoutes />
+        </Layout>
+      </AuthContextProvider>
+    </BrowserRouter>
   );
 }
 

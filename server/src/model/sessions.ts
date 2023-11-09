@@ -13,7 +13,7 @@ const sessionSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     valid: { type: Boolean, default: true },
-    userAgent: { type: String },
+    userAgent: { type: String }, // Identiy the client and OS
   },
   {
     timestamps: true,

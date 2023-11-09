@@ -1,8 +1,9 @@
 import React from 'react';
+import s from './index.module.scss';
 
 const Branding = () => {
   return (
-    <header>
+    <header className={s.header}>
       <h1>Vendi-Man</h1>
     </header>
   );

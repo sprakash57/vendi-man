@@ -1,0 +1,27 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  min-width: 320px;
+  height: 100vh;
+  background: #c2bbbb;
+}
+
+button {
+  border-radius: 5px;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  &[data-variant='primary'] {
+    background-color: teal;
+    color: white;
+  }
+  &[data-variant='danger'] {
+    background-color: tomato;
+    color: white;
+  }
+}
