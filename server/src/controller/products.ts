@@ -32,7 +32,7 @@ export const updateProductController = async (req: Request, res: Response) => {
     if (!product) {
       return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
-
+    // Stop user from updating product that does not belong to them
     if (String(product.user) !== sellerId) {
       return res.status(400).json({ status: 'error', message: Messages.NO_SELLER });
     }

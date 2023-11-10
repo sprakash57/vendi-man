@@ -1,5 +1,7 @@
 export enum Messages {
   USER_CREATED = 'User created Successfully',
+  USER_EXISTS = 'User already exists',
+  USER_NOT_FOUND = 'Invalid credentials',
   NO_BUYER = 'User is not a buyer',
   NO_SELLER = 'User is not a seller',
   EXPIRED_SESSION = 'Session expired',

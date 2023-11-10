@@ -20,7 +20,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <li>
               <Link to='/profile'>Profile</Link>
             </li>
-            <li onClick={handleLogout}>Logout</li>
+            <li role='button' onClick={handleLogout}>
+              Logout
+            </li>
           </ul>
         )}
       </nav>

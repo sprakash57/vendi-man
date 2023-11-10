@@ -11,7 +11,7 @@ const PORT = config.get('port');
 
 const app = express();
 
-// app.use(contentSecurityPolicy());
+app.use(contentSecurityPolicy());
 
 app.use(express.json());
 app.use(cors());

@@ -8,7 +8,7 @@ import config from 'config';
 export const createSessionController = async (req: Request, res: Response) => {
   try {
     const user = await checkPassword(req.body);
-    if (!user) return res.status(401).json({ status: 'error', message: Messages.STATUS_400 });
+    if (!user) return res.status(401).json({ status: 'error', message: Messages.USER_NOT_FOUND });
 
     const sessions = await findSessions({ user: user._id, valid: true });
 

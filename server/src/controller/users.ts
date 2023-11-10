@@ -5,6 +5,10 @@ import { omit } from 'lodash';
 
 export const newUserController = async (req: Request, res: Response) => {
   try {
+    const existingUser = await findUser({ username: req.body.username });
+    // Check if user already exists
+    if (existingUser) return res.status(409).json({ status: 'error', message: Messages.USER_EXISTS });
+
     const user = await createUser(req.body);
     const data = omit(user, ['password', '_id']);
 

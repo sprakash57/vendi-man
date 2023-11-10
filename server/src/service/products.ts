@@ -42,7 +42,8 @@ export const deleteProduct = (query: FilterQuery<ProductDocument>) => {
 
 export const calculateChange = (balance: number, coins: number[]) => {
   const changeCoins: number[] = [];
-  for (let coin of coins) {
+  const sortedCoins = coins.sort((a, b) => b - a);
+  for (let coin of sortedCoins) {
     while (balance >= coin) {
       changeCoins.push(coin);
       balance -= coin;

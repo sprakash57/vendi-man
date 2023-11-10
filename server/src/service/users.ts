@@ -28,6 +28,6 @@ export const checkPassword = async ({ username, password }: SessionInput) => {
   const user = await UserModel.findOne({ username });
   if (!user) return null;
   const isValid = await user.comparePassword(password);
-  if (!isValid) return false;
+  if (!isValid) return null;
   return omit(user.toJSON(), 'password');
 };

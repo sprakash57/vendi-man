@@ -2,6 +2,18 @@ import { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Messages, VALID_COINS } from '../constants';
 
+export const depositValidator = [
+  body('depositAmount')
+    .isInt({ min: 0, max: 100 })
+    .withMessage('Deposit amount must be an integer between 0 and 100')
+    .custom(value => {
+      if (value % VALID_COINS[0] !== 0 && value !== 0) {
+        throw new Error(`Deposit amount must be in multiple of ${VALID_COINS[0]}`);
+      }
+      return true;
+    }),
+];
+
 export const userValidator = [
   body('username', 'Name is required').notEmpty(),
   body('password', 'Password is required').isLength({ min: 6 }).withMessage('Password is too short'),
@@ -12,18 +24,7 @@ export const userValidator = [
     return true;
   }),
   body('role', 'Invalid role').isIn(['buyer', 'seller']),
-];
-
-export const depositValidator = [
-  body('depositAmount')
-    .isInt({ min: 0, max: 100 })
-    .withMessage('Deposit amount must be an integer between 0 and 100')
-    .custom(value => {
-      if (!VALID_COINS.includes(value)) {
-        throw new Error(`Deposit amount must be in multiples of ${VALID_COINS.join(', ')}`);
-      }
-      return true;
-    }),
+  ...depositValidator,
 ];
 
 export const userVerification = (req: Request, res: Response, next: NextFunction) => {
