@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  &__switch {
+    display: inline-block;
+    height: 25px;
+    width: 48px;
+    background-color: #ddd;
+    border-radius: 20px;
+    position: relative;
+    &[data-active='true'] {
+      background-color: #e0f2f1;
+    }
+    &__button {
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background-color: gray;
+      position: absolute;
+      top: 2px;
+      left: 26px;
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      &[data-active='true'] {
+        background-color: teal;
+        left: 2px;
+      }
+    }
+  }
+}

@@ -1,30 +1,35 @@
-import { ProductDetailsResponse } from '@/types';
+import { ProductFormFields, ProductDetailsResponse } from '@/types';
 import { api } from '@/utils/api';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-
-interface NewProduct {
-  productName: string;
-  cost: number;
-  amountAvailable: number;
-}
+import { Link, useParams } from 'react-router-dom';
+import s from './index.module.scss';
+import { useAuthContext } from '@/contexts/auth';
+import ProductForm from '@/routes/Product/ProductForm';
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<ProductDetailsResponse | null>(null);
   const [editing, setEditing] = useState(false);
-  const [newProduct, setNewProduct] = useState<NewProduct>({
+  const [newProduct, setNewProduct] = useState<ProductFormFields>({
     productName: '',
     cost: 0,
     amountAvailable: 0,
   });
+  const { user } = useAuthContext();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewProduct(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const isProductOwner = product?.data.user === user?._id;
 
   const handleDelete = async () => {
     await api.delete(`/products/${id}`);
+  };
+
+  const handleEdit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if ((e.target as HTMLButtonElement).textContent === 'Edit') {
+      setEditing(true);
+    } else {
+      await api.put(`/products/${id}`, newProduct);
+      setEditing(false);
+    }
   };
 
   useEffect(() => {
@@ -46,24 +51,49 @@ const ProductDetails = () => {
   }
 
   return (
-    <section>
-      <div>
-        <button onClick={() => setEditing(!editing)}>{editing ? 'Save' : 'Edit'}</button>
-        {editing && <button onClick={() => setEditing(false)}>Cancel</button>}
-        <button onClick={handleDelete}>Delete</button>
+    <section className={s.details}>
+      <div className={s.details__actions}>
+        <Link to='/'>Back</Link>
+        <div>
+          {isProductOwner && (
+            <>
+              <button onClick={handleEdit} data-variant='primary'>
+                {editing ? 'Save' : 'Edit'}
+              </button>
+              {editing && (
+                <button onClick={() => setEditing(false)} data-variant='secondary'>
+                  Cancel
+                </button>
+              )}
+              <button onClick={handleDelete} data-variant='danger'>
+                Delete
+              </button>
+            </>
+          )}
+        </div>
       </div>
       {editing ? (
-        <>
-          <input name='productName' type='text' value={newProduct.productName} onChange={handleChange} />
-          <input name='cost' type='text' value={newProduct.cost} onChange={handleChange} />
-          <input name='amountAvailable' type='text' value={newProduct.amountAvailable} onChange={handleChange} />
-        </>
+        <ProductForm product={newProduct} setProduct={setNewProduct} />
       ) : (
-        <>
-          <h1>{product.data.productName}</h1>
-          <p>{product.data.cost}</p>
-          <p>{product.data.amountAvailable}</p>
-        </>
+        <div>
+          <h1 className={s.details__name}>{product.data.productName}</h1>
+          <p>Amount Available: {product.data.amountAvailable}</p>
+          <p>Cost: {product.data.cost}</p>
+          <div className={s.details__date}>
+            <small>
+              Added on:{' '}
+              {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(
+                new Date(product.data.createdAt),
+              )}
+            </small>
+            <small>
+              Last updated:{' '}
+              {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(
+                new Date(product.data.updatedAt),
+              )}
+            </small>
+          </div>
+        </div>
       )}
     </section>
   );

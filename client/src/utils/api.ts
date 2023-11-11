@@ -10,8 +10,9 @@ export const api = axios.create({
 api.interceptors.request.use(
   config => {
     const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
+    console.log(tokens);
     if (Object.keys(tokens).length === 0) return config;
-    config.headers['Authorization'] = `bearer ${tokens.accessToken}`;
+    config.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
     return config;
   },
   error => Promise.reject(error),
@@ -21,7 +22,7 @@ api.interceptors.response.use(
   resonse => resonse,
   async error => {
     const originalConfig = error.config;
-    if (originalConfig.url !== '/sessions') {
+    if (originalConfig.url !== '/sessions/logout') {
       if (error.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
         try {

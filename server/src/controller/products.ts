@@ -15,7 +15,7 @@ export const createProductController = async (req: Request, res: Response) => {
   try {
     const sellerId = res.locals.user._id;
     const product = await createProduct({ ...req.body, user: sellerId });
-    return res.json({ status: 'success', message: Messages.SUCCESS, data: product });
+    return res.status(201).json({ status: 'success', message: Messages.SUCCESS, data: product });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });

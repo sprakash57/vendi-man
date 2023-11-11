@@ -1,0 +1,10 @@
+.field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  input {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid gray;
+  }
+}

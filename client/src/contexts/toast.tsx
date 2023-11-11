@@ -2,6 +2,14 @@ import { createContext, useState, useContext, useEffect } from 'react';
 import Portal from '@/components/shared/Portal';
 import { Toast } from '@/components/Toast';
 
+/**
+ * [
+          { id: '1', mode: 'error', message: 'some dummy message' },
+          { id: '2', mode: 'error', message: 'some dummy message' },
+          { id: '3', mode: 'info', message: 'some dummy message' },
+        ]
+ */
+
 interface ToastContent {
   message: string;
   mode?: string;
@@ -25,7 +33,6 @@ const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = (messages: ToastContent[]) => {
-    console.log('showToast', messages);
     const toasts = messages.map((m, i) => ({ id: `${Date.now()}${i}`, message: m.message, mode: m?.mode || 'error' }));
     setToasts(prevToasts => [...prevToasts, ...toasts]);
   };

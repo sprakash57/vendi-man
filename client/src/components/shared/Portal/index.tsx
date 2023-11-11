@@ -12,7 +12,7 @@ const Portal = ({ children, wrapperId = 'app-portal' }: { children: React.ReactN
       isCreated = true;
       element = document.createElement('div');
       element.setAttribute('id', wrapperId);
-      Object.assign(element.style, { position: 'fixed', top: '92px', right: '10px' });
+      Object.assign(element.style, { position: 'fixed', bottom: '40px', left: '10px' });
       document.body.appendChild(element);
     }
 

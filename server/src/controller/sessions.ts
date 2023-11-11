@@ -53,9 +53,9 @@ export const deleteSessionController = async (_req: Request, res: Response) => {
     const sessionId = res.locals.user.session;
     await updateSession({ _id: sessionId }, { valid: false });
     res.locals = {};
-    return res.json({
+    return res.status(201).json({
       status: 'success',
-      message: Messages.SUCCESS,
+      message: Messages.LOGOUT_SUCCESS,
       data: {
         accessToken: null,
         refreshToken: null,
@@ -74,7 +74,7 @@ export const deleteAllSessionController = async (_req: Request, res: Response) =
       await updateSession({ _id: session._id }, { valid: false });
     });
     res.locals = {};
-    return res.json({ status: 'success', message: Messages.SUCCESS });
+    return res.json({ status: 'success', message: Messages.LOGOUT_SUCCESS });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });

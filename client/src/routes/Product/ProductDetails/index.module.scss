@@ -1,0 +1,33 @@
+.details {
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 340px;
+  margin: 0 auto;
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    button {
+      margin-left: 0.5rem;
+    }
+  }
+
+  &__date {
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-size: 1.8rem;
+  }
+}

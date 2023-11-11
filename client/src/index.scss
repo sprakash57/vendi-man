@@ -24,4 +24,12 @@ button {
     background-color: tomato;
     color: white;
   }
+  &[data-variant='secondary'] {
+    border: teal solid 1px;
+    color: teal;
+  }
+}
+
+a {
+  color: teal;
 }

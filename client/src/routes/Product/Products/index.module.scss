@@ -1,3 +1,55 @@
 .loader {
-  height: 100vh;
+  height: 50vh;
+}
+
+.products {
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+  h1 {
+    font-size: 2rem;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    a {
+      display: block;
+      text-decoration: none;
+      color: black;
+      padding: 0.5rem;
+      box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+.table {
+  margin: 1rem 0;
+  padding: 2px;
+  border-bottom: 1px solid teal;
+  &__row,
+  &__header {
+    display: grid;
+    padding: 4px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    text-decoration: none;
+  }
+  &__header {
+    border-bottom: 1px solid teal;
+    padding-bottom: 4px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  &__row:hover {
+    background-color: #f5f5f5;
+  }
 }

@@ -75,10 +75,25 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await api.put('/sessions/logout');
-    localStorage.removeItem('tokens');
-    setUser(null);
-    navigate('/');
+    try {
+      const { data: responseData }: AxiosResponse<LoginResponse> = await api.put('/sessions/logout');
+      showToast([{ message: responseData.message || 'Success', mode: 'success' }]);
+    } catch (e: unknown) {
+      const error = e as AxiosError<{ errors: { msg: string }[] } | { message: string }>;
+      if (error.response?.data) {
+        if ('errors' in error.response.data) {
+          showToast(error.response.data.errors.map((e: { msg: string }) => ({ message: e.msg })));
+        } else {
+          showToast([{ message: error.response.data.message }]);
+        }
+      } else {
+        showToast([{ message: 'Something went wrong' }]);
+      }
+    } finally {
+      localStorage.removeItem('tokens');
+      setUser(null);
+      navigate('/login');
+    }
   };
 
   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;

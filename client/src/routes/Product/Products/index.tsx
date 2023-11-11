@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import s from './index.module.scss';
 import useProducts from '@/hooks/useProducts';
 import Spinner from '@/components/Spinner';
+import ProductTable from './ProductTable';
+import { ProductTableProps } from '@/types';
 
 const Products = () => {
   const [page, setPage] = useState(1);
@@ -27,32 +28,28 @@ const Products = () => {
     }
 
     if (products?.data) {
-      return (
-        <ul>
-          {products.data.map(product => (
-            <Link key={product.productId} to={`/products/${product.productId}`}>
-              <li>
-                {product.productName} {product.cost} Available: {product.amountAvailable}
-              </li>
-            </Link>
-          ))}
-        </ul>
-      );
+      const tableData: ProductTableProps[] = products.data.map(product => ({
+        productId: product.productId,
+        productName: product.productName,
+        amountAvailable: product.amountAvailable,
+        cost: product.cost,
+        updatedAt: new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short' }).format(
+          new Date(product.updatedAt),
+        ),
+      }));
+      return <ProductTable products={tableData} />;
     }
   };
 
   return (
-    <section>
-      <div>
-        <h1>Products</h1>
-        <button>Add New</button>
-      </div>
+    <section className={s.products}>
+      <h1>Products</h1>
       {renderBody()}
-      <div>
-        <button onClick={handleNavigation} disabled={page <= 1}>
+      <div className={s.products__action}>
+        <button onClick={handleNavigation} disabled={page <= 1} data-variant='primary'>
           Prev
         </button>
-        <button onClick={handleNavigation} disabled={(products?.productsCount || 0) <= page * 10}>
+        <button onClick={handleNavigation} disabled={(products?.productsCount || 0) <= page * 10} data-variant='primary'>
           Next
         </button>
       </div>

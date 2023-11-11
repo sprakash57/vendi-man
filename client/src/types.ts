@@ -26,3 +26,14 @@ export interface ProductDetailsResponse {
   message: string;
   data: Product;
 }
+
+export interface ProductFormFields {
+  productName: string;
+  cost: number;
+  amountAvailable: number;
+}
+
+export interface ProductTableProps extends ProductFormFields {
+  productId: string;
+  updatedAt: string;
+}

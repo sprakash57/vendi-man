@@ -1,6 +1,6 @@
 .toast {
-  max-width: 350px;
-  width: 350px;
+  max-width: 320px;
+  width: 320px;
   padding: 1rem 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -21,18 +21,17 @@
   font-size: 0.8rem;
   cursor: pointer;
 }
-
 .success {
-  background-color: #83bd83;
+  background-color: #28a745;
 }
 .warning {
-  background-color: #bda883;
+  background-color: #ffc107;
 }
 .error {
-  background-color: #bd8383;
+  background-color: #dc3545;
 }
 .info {
-  background-color: #8398bd;
+  background-color: #17a2b8;
 }
 
 @keyframes fadeIn {

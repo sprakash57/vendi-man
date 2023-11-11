@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { api, AxiosError } from '@/utils/api';
+import { api, AxiosError, AxiosResponse } from '@/utils/api';
 import Branding from '@/components/Branding';
 import { useToastContext } from '@/contexts/toast';
 import s from './index.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [userData, setUserData] = useState({
@@ -14,6 +14,7 @@ const Register = () => {
     depositAmount: 0,
   });
   const { showToast } = useToastContext();
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -22,7 +23,9 @@ const Register = () => {
   const handleAddUser = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      await api.post('/users', userData);
+      const { data }: AxiosResponse<{ message: string }> = await api.post('/users', userData);
+      showToast([{ message: data.message, mode: 'success' }]);
+      navigate('/login');
     } catch (e: unknown) {
       const error = e as AxiosError<{ message: string } | { errors: { msg: string }[] }>;
       if (error.response?.data) {
@@ -52,9 +55,9 @@ const Register = () => {
             value={userData.confirmPassword}
             onChange={handleChange}
           />
-          <div>
-            <p>Select role:</p>
-            <div className={s.role}>
+          <div className={s.form__fields__role}>
+            <label>Select role:</label>
+            <div>
               <label>
                 <input type='radio' name='role' value='buyer' checked={userData.role === 'buyer'} onChange={handleChange} />
                 Buyer
@@ -72,15 +75,15 @@ const Register = () => {
             </div>
           </div>
           <div className={s.form__deposit}>
-            <label>Deposit:</label>
+            <label>Deposit: {userData.depositAmount || ''}</label>
             <input
               placeholder='Deposit'
-              type='text'
+              type='number'
               name='depositAmount'
               value={userData.depositAmount}
               onChange={handleChange}
             />
-            <small>* Deposit amount should be multiple of 5 and less than 101</small>
+            <small>*Amount should be multiple of 5 and less than 101</small>
           </div>
           <hr className={s.divider} />
           <div className={s.form__actions}>
