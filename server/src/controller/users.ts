@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { createUser, findAndUpdateUser, findUser } from '../service/users';
+import { createUser, deleteUser, findAndUpdateUser, findUser } from '../service/users';
 import { Messages } from '../constants';
 import { omit } from 'lodash';
 
@@ -43,6 +43,17 @@ export const getUserController = async (_req: Request, res: Response) => {
       status: 'error',
       message: Messages.STATUS_500,
     });
+  }
+};
+
+export const deleteUserController = async (_req: Request, res: Response) => {
+  try {
+    const userId = res.locals.user._id;
+    await deleteUser(userId);
+    return res.status(201).json({ status: 'success', message: Messages.ACCOUNT_DELETED });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
   }
 };
 

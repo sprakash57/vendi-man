@@ -18,17 +18,17 @@ export const verifyToken = (token: string, keyName: KeyName) => {
   const publicKey = getKey(keyName);
 
   try {
-    const verifiedToken = jwt.verify(token, publicKey);
+    const jwtPayload = jwt.verify(token, publicKey);
     return {
       valid: true,
       expired: false,
-      verifiedToken,
+      jwtPayload,
     };
   } catch (error) {
     return {
       valid: false,
       expired: (error as { message: string }).message === TOKEN_EXPIRED,
-      verifiedToken: null,
+      jwtPayload: null,
     };
   }
 };

@@ -1,11 +1,12 @@
 import { ProductResponse } from '@/types';
-import { api } from '@/utils/api';
 import { useState, useEffect } from 'react';
+import useAxios from './useAxios';
 
 const useProducts = (page: number) => {
   const [products, setProducts] = useState<ProductResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const { api } = useAxios();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,9 +21,9 @@ const useProducts = (page: number) => {
     };
 
     fetchProducts();
-  }, [page]);
+  }, [page, api]);
 
-  return { products, loading, error };
+  return { products: products?.data || [], loading, error };
 };
 
 export default useProducts;

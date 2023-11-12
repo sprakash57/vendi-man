@@ -5,7 +5,7 @@ import AuthRoutes from '@/components/shared/AuthRoutes';
 import Products from '@/routes/Product/Products';
 import ProductDetails from '@/routes/Product/ProductDetails';
 import Register from '@/routes/Auth/Register';
-import AddProduct from './Product/AddProduct';
+import AddProduct from '@/routes/Product/AddProduct';
 
 const AppRoutes = () => {
   return (

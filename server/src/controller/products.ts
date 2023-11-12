@@ -9,7 +9,6 @@ import {
 } from '../service/products';
 import { Messages, VALID_COINS } from '../constants';
 import { findAndUpdateUser, findUser } from '../service/users';
-import ProductModel from '../model/products';
 
 export const createProductController = async (req: Request, res: Response) => {
   try {
@@ -70,7 +69,7 @@ export const deleteProductController = async (req: Request, res: Response) => {
     if (!product) {
       return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
-
+    // Stop user from updating product that does not belong to them
     if (String(product.user) !== sellerId) {
       return res.status(400).json({ status: 'error', message: Messages.NO_SELLER });
     }
@@ -135,10 +134,10 @@ export const buyProductController = async (req: Request, res: Response) => {
 };
 
 export const getAllProductsController = async (req: Request, res: Response) => {
-  const { page = 1, limit = 10 } = req.query;
   try {
-    const products = await findAllProducts(ProductModel, page, limit);
-    const count = await ProductModel.countDocuments();
+    const { page = 1, limit = 10 } = req.query;
+    const products = await findAllProducts(Number(page), Number(limit));
+    const count = products.length;
 
     return res.json({
       status: 200,

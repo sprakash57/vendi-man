@@ -1,6 +1,6 @@
 export interface Product {
   _id: string;
-  user: string;
+  user: { username: string; _id: string } | null;
   productName: string;
   cost: number;
   amountAvailable: number;
@@ -35,5 +35,5 @@ export interface ProductFormFields {
 
 export interface ProductTableProps extends ProductFormFields {
   productId: string;
-  updatedAt: string;
+  user: { username: string; _id: string };
 }

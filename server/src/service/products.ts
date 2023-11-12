@@ -10,18 +10,21 @@ export const createProduct = async (input: ProductInput) => {
   }
 };
 
-export const findAllProducts = async (Model: any, page: any, limit: any) => {
-  const docs = await Model.find()
-    .limit(limit * 1)
-    .skip((Number(page) - 1) * limit)
-    .then((result: any) => result)
-    .catch((error: any) => error);
-  return docs;
+export const findAllProducts = async (page: number, limit: number) => {
+  try {
+    const products = await ProductModel.find({}, {}, { skip: (page - 1) * limit, limit }).populate(
+      'user',
+      '-password -__v -createdAt -updatedAt',
+    );
+    return products;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const findProduct = async (query: FilterQuery<ProductDocument>, options: QueryOptions = { lean: true }) => {
   try {
-    const result = await ProductModel.findOne(query, {}, options);
+    const result = await ProductModel.findOne(query, {}, options).populate('user', '-password -__v -createdAt -updatedAt');
     return result;
   } catch (e) {
     throw e;

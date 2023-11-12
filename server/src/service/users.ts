@@ -2,6 +2,9 @@ import { FilterQuery, UpdateQuery, QueryOptions } from 'mongoose';
 import UserModel, { UserInput, UserDocument } from '../model/users';
 import { omit } from 'lodash';
 import { SessionInput } from '../types';
+import SessionModel from '../model/sessions';
+import ProductModel from '../model/products';
+import { Messages } from '../constants';
 
 export const createUser = async (input: UserInput) => {
   try {
@@ -22,6 +25,17 @@ export const findAndUpdateUser = async (
   options: QueryOptions,
 ) => {
   return UserModel.findOneAndUpdate(query, update, options);
+};
+
+export const deleteUser = async (userId: string) => {
+  const existingUser = await findUser({ _id: userId });
+  if (!existingUser) throw new Error(Messages.USER_NOT_FOUND);
+
+  await SessionModel.deleteMany({ user: userId });
+  await ProductModel.deleteMany({ user: userId });
+  const userDeletionResult = await UserModel.deleteOne({ _id: userId });
+
+  return userDeletionResult;
 };
 
 export const checkPassword = async ({ username, password }: SessionInput) => {

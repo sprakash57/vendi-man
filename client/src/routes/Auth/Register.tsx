@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { api, AxiosError, AxiosResponse } from '@/utils/api';
 import Branding from '@/components/Branding';
 import { useToastContext } from '@/contexts/toast';
 import s from './index.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
+import useAxios, { AxiosResponse } from '@/hooks/useAxios';
 
 const Register = () => {
   const [userData, setUserData] = useState({
@@ -15,6 +15,7 @@ const Register = () => {
   });
   const { showToast } = useToastContext();
   const navigate = useNavigate();
+  const { api, apiErrorHandler } = useAxios();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -27,16 +28,7 @@ const Register = () => {
       showToast([{ message: data.message, mode: 'success' }]);
       navigate('/login');
     } catch (e: unknown) {
-      const error = e as AxiosError<{ message: string } | { errors: { msg: string }[] }>;
-      if (error.response?.data) {
-        if ('errors' in error.response.data) {
-          showToast(error.response.data.errors.map((e: { msg: string }) => ({ message: e.msg })));
-        } else {
-          showToast([{ message: error.response.data.message }]);
-        }
-      } else {
-        showToast([{ message: 'Something went wrong' }]);
-      }
+      apiErrorHandler(e);
     }
   };
 

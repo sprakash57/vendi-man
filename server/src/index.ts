@@ -6,6 +6,8 @@ import routes from './routes';
 import connectDb from './utils/connectDb';
 import authAndRefreshToken from './middleware/common/authAndRefreshToken';
 import contentSecurityPolicy from './middleware/common/contentSecurityPolicy';
+import corsOptions from './utils/corsOptions';
+import checkAllowedOrigins from './middleware/common/checkAllowedOrigin';
 
 const PORT = config.get('port');
 
@@ -13,9 +15,15 @@ const app = express();
 
 app.use(contentSecurityPolicy());
 
-app.use(express.json());
-app.use(cors());
+// Handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(checkAllowedOrigins);
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
+
 app.use(morgan('combined'));
+
+app.use(express.json());
 
 app.use(authAndRefreshToken);
 

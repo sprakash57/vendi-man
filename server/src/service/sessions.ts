@@ -20,10 +20,11 @@ export async function updateSession(query: FilterQuery<SessionDocument>, update:
 }
 
 export const getNewAccessToken = async (refreshToken: string) => {
-  const { verifiedToken } = verifyToken(refreshToken as string, 'refreshTokenPublicKey');
-  if (!verifiedToken || !get(verifiedToken, 'session')) return false;
+  const { jwtPayload } = verifyToken(refreshToken as string, 'refreshTokenPublicKey');
 
-  const session = await SessionModel.findById(get(verifiedToken, 'session'));
+  if (!jwtPayload || !get(jwtPayload, 'session')) return false;
+
+  const session = await SessionModel.findById(get(jwtPayload, 'session'));
 
   if (!session || !session.valid) return false;
 

@@ -10,7 +10,7 @@ const AuthRoutes = ({ children }: Props) => {
   const { user } = useAuthContext();
 
   if (user) return children;
-  return <Navigate to='/' />;
+  return <Navigate to='/login' />;
 };
 
 export default AuthRoutes;

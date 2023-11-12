@@ -16,10 +16,7 @@ export interface ProductDocument extends ProductInput, mongoose.Document {
 
 const productSchema = new mongoose.Schema(
   {
-    productId: {
-      type: String,
-      unique: true,
-    },
+    productId: { type: String, unique: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     productName: { type: String, required: true },
     cost: { type: Number, required: true },

@@ -1,13 +1,14 @@
 import { ProductFormFields, ProductDetailsResponse } from '@/types';
-import { api } from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import s from './index.module.scss';
 import { useAuthContext } from '@/contexts/auth';
 import ProductForm from '@/routes/Product/ProductForm';
+import useAxios from '@/hooks/useAxios';
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
+  const { api } = useAxios();
   const [product, setProduct] = useState<ProductDetailsResponse | null>(null);
   const [editing, setEditing] = useState(false);
   const [newProduct, setNewProduct] = useState<ProductFormFields>({
