@@ -18,5 +18,5 @@ export const getProductValidator = [productIdParamValidator];
 
 export const buyProductValidator = [
   productIdParamValidator,
-  body('unitOfProductToBeBought', 'Amount of product is required').isNumeric().isInt({ gt: 0 }),
+  body('quantityToBeBought', 'Quantity of product to be bought is required').isNumeric().isInt({ gt: 0 }),
 ];

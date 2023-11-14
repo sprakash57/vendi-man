@@ -12,12 +12,7 @@
 
   &__actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    button {
-      margin-left: 0.5rem;
-    }
+    gap: 0.5rem;
   }
 
   &__date {
@@ -29,5 +24,18 @@
 
   &__name {
     font-size: 1.8rem;
+    margin: 0;
+  }
+
+  &__field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0 0;
+    input {
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid gray;
+    }
   }
 }

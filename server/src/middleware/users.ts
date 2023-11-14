@@ -38,7 +38,7 @@ export const userVerification = (req: Request, res: Response, next: NextFunction
   return next();
 };
 
-export const buyerVerification = (req: Request, res: Response, next: NextFunction) => {
+export const buyerVerification = (_req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
   if (!user) {
     return res.status(401).json({ status: 'error', message: Messages.EXPIRED_SESSION });

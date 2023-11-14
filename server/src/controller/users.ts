@@ -30,7 +30,7 @@ export const getUserController = async (_req: Request, res: Response) => {
   try {
     const userId = res.locals.user._id;
     const user = await findUser({ _id: userId });
-    const data = omit({ ...user }, ['password', '_id']);
+    const data = omit({ ...user }, ['password']);
 
     return res.status(200).json({
       status: 'success',

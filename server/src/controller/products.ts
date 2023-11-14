@@ -32,7 +32,7 @@ export const updateProductController = async (req: Request, res: Response) => {
       return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
     // Stop user from updating product that does not belong to them
-    if (String(product.user) !== sellerId) {
+    if (String(product.user._id) !== sellerId) {
       return res.status(400).json({ status: 'error', message: Messages.NO_SELLER });
     }
 
@@ -70,7 +70,7 @@ export const deleteProductController = async (req: Request, res: Response) => {
       return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
     // Stop user from updating product that does not belong to them
-    if (String(product.user) !== sellerId) {
+    if (String(product.user._id) !== sellerId) {
       return res.status(400).json({ status: 'error', message: Messages.NO_SELLER });
     }
 
@@ -102,11 +102,11 @@ export const buyProductController = async (req: Request, res: Response) => {
       return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
 
-    if (!(product.amountAvailable >= req.body?.unitOfProductToBeBought)) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
+    if (!(product.amountAvailable >= req.body?.quantityToBeBought)) {
+      return res.status(400).json({ status: 'error', message: Messages.INVALID_PRODUCT_QUANTITY });
     }
 
-    const totalSpent = product.cost * req.body?.unitOfProductToBeBought;
+    const totalSpent = product.cost * req.body?.quantityToBeBought;
 
     if (!(Number(user.deposit) >= totalSpent)) {
       return res.status(400).json({ status: 'error', message: Messages.INSUFFICIENT_DEPOSIT });
@@ -118,7 +118,7 @@ export const buyProductController = async (req: Request, res: Response) => {
 
     await findAndUpdateProduct(
       { productId },
-      { amountAvailable: product.amountAvailable - req.body?.unitOfProductToBeBought },
+      { amountAvailable: product.amountAvailable - req.body?.quantityToBeBought },
       { new: true },
     );
 

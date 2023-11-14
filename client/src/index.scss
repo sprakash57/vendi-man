@@ -28,6 +28,10 @@ button {
     border: teal solid 1px;
     color: teal;
   }
+  &[data-variant='danger-outline'] {
+    border: tomato solid 1px;
+    color: tomato;
+  }
 }
 
 a {

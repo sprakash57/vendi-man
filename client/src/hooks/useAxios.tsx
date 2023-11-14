@@ -17,7 +17,7 @@ const useAxios = () => {
     const requestIntercept = api.interceptors.request.use(
       config => {
         if (Object.keys(tokens).length === 0) return config;
-        if (!config.headers['Authorization']) {
+        if (!config.headers['Authorization'] || !config.url?.includes('/sessions')) {
           config.headers['Authorization'] = `Bearer ${tokens?.accessToken}`;
         }
         return config;
@@ -29,16 +29,19 @@ const useAxios = () => {
       response => response,
       async error => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
-          prevRequest.sent = true;
-          const { data: sessionData } = await api.post('/sessions', {
-            refreshToken: tokens?.refreshToken,
-            accessToken: tokens?.accessToken,
-          });
-          localStorage.setItem('tokens', JSON.stringify(sessionData.data));
-          prevRequest.headers['x-refresh'] = tokens?.refreshToken;
-          prevRequest.headers['Authorization'] = `Bearer ${sessionData.data.accessToken}`;
-          return api(prevRequest);
+        if (error?.response?.status === 401 && !prevRequest?._retry) {
+          prevRequest._retry = true;
+          try {
+            const response = await api.post('/sessions/refresh', {
+              refreshToken: tokens?.refreshToken,
+            });
+            localStorage.setItem('tokens', JSON.stringify(response.data));
+            console.log(response.data.accessToken);
+            prevRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
+            return api(prevRequest);
+          } catch (error) {
+            return Promise.reject(error);
+          }
         }
         return Promise.reject(error);
       },

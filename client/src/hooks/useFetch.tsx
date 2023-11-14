@@ -1,6 +1,6 @@
-import { api } from '@/utils/api';
 import { AxiosRequestConfig } from 'axios';
 import { useState, useEffect } from 'react';
+import useAxios from './useAxios';
 
 type Callback<T> = (() => void) | ((args: T) => void) | React.Dispatch<React.SetStateAction<T>>;
 
@@ -11,6 +11,7 @@ interface FetchProps<T> {
 }
 
 function useFetch<T>({ url, options }: FetchProps<T>): { data: T; loading: boolean; error: string | null } {
+  const { api } = useAxios();
   const [data, setData] = useState<T>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +29,7 @@ function useFetch<T>({ url, options }: FetchProps<T>): { data: T; loading: boole
     };
 
     fetchData();
-  }, [options, url]);
+  }, [options, url, api]);
 
   return { data: data as T, loading, error };
 }

@@ -36,7 +36,7 @@ export const findAndUpdateProduct = async (
   update: UpdateQuery<ProductDocument>,
   options: QueryOptions,
 ) => {
-  return ProductModel.findOneAndUpdate(query, update, options);
+  return ProductModel.findOneAndUpdate(query, update, options).populate('user', '-password -__v -createdAt -updatedAt');
 };
 
 export const deleteProduct = (query: FilterQuery<ProductDocument>) => {

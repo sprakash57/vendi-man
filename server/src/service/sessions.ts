@@ -5,6 +5,7 @@ import { findUser } from './users';
 import { get } from 'lodash';
 import config from 'config';
 import { JwtPayload } from 'jsonwebtoken';
+import { Messages } from '../constants';
 
 export const createSession = async (userId: string, userAgent: string) => {
   const session = await SessionModel.create({ user: userId, userAgent });
@@ -21,22 +22,27 @@ export async function updateSession(query: FilterQuery<SessionDocument>, update:
 
 export const getNewAccessToken = async (refreshToken: string) => {
   const { jwtPayload } = verifyToken(refreshToken as string, 'refreshTokenPublicKey');
-
+  console.log('---->jwtPayload');
   if (!jwtPayload || !get(jwtPayload, 'session')) return false;
+  console.log('---->jwtPayload session', jwtPayload);
 
   const session = await SessionModel.findById(get(jwtPayload, 'session'));
 
+  console.log('---->session valid', session);
   if (!session || !session.valid) return false;
 
   const user = await findUser({ _id: session.user });
 
   if (!user) return false;
+  console.log('---->user find');
 
-  const newAccessToken = signToken({ ...user, session: session._id }, 'accessTokenPrivateKey', {
+  const sessions = await findSessions({ user: user._id, valid: true });
+
+  const accessToken = signToken({ ...user, session: session._id }, 'accessTokenPrivateKey', {
     expiresIn: config.get('accessTokenValidity'),
   });
 
-  return newAccessToken;
+  return { multiSessionAlert: sessions.length ? Messages.DUPLICATE_SESSION : '', accessToken };
 };
 
 export const checkSession = async (verifiedToken: string | JwtPayload | null) => {

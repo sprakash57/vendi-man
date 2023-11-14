@@ -1,9 +1,21 @@
 import { Request, Response } from 'express';
 import { Messages } from '../constants';
 import { checkPassword } from '../service/users';
-import { createSession, findSessions, updateSession } from '../service/sessions';
+import { createSession, findSessions, getNewAccessToken, updateSession } from '../service/sessions';
 import { signToken } from '../utils/jwt';
 import config from 'config';
+
+export const refreshTokenController = async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.body;
+    const result = await getNewAccessToken(refreshToken);
+    if (!result) return res.status(403).json({ status: 'error', message: Messages.INVALID_REFRESH_TOKEN });
+    return res.json({ ...result, refreshToken });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
+  }
+};
 
 export const createSessionController = async (req: Request, res: Response) => {
   try {

@@ -16,9 +16,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <h3>Vendi-Man</h3>
         {user && (
           <ul className={s.nav__items}>
-            <li>Balance: {user.deposit}</li>
+            <li>Balance: € {user.deposit}</li>
             <li>
               <Link to='/profile'>Profile</Link>
+            </li>
+            <li>
+              <Link to='/'>Products</Link>
             </li>
             <li role='button' onClick={handleLogout}>
               Logout

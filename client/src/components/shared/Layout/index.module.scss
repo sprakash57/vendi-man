@@ -11,10 +11,30 @@
     color: white;
   }
   &__items {
+    margin: 0;
+    color: white;
     display: flex;
+    align-items: center;
     gap: 1rem;
     list-style: none;
     padding: 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    a {
+      color: white;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    li:first-child {
+      cursor: default;
+      background-color: white;
+      padding: 0.25rem 0.5rem;
+      color: teal;
+      border-radius: 5px;
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    }
   }
 }
 .container {

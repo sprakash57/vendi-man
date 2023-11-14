@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './index.module.scss';
 import { useAuthContext } from '@/contexts/auth';
 import Branding from '@/components/Branding';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Auth = () => {
   const [userData, setUserData] = useState({
     username: '',
     password: '',
   });
-
-  const { login } = useAuthContext();
+  const navigate = useNavigate();
+  const { login, user } = useAuthContext();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -20,6 +20,12 @@ const Auth = () => {
     e.preventDefault();
     login({ username: userData.username, password: userData.password });
   };
+  // Redirect to home if user is logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   return (
     <>
