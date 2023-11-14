@@ -10,7 +10,7 @@ import { useAuthContext } from '@/contexts/auth';
 const Products = () => {
   const { user } = useAuthContext();
   const [page, setPage] = useState(1);
-  const { products, loading, error } = useProducts(page);
+  const { products, loading, error, productsCount } = useProducts(page);
   const navigate = useNavigate();
 
   const isUserSeller = user?.role === 'seller';
@@ -60,7 +60,7 @@ const Products = () => {
         <button onClick={handleNavigation} disabled={page <= 1} data-variant='primary'>
           Prev
         </button>
-        <button onClick={handleNavigation} disabled={(products.length || 0) <= page * 10} data-variant='primary'>
+        <button onClick={handleNavigation} disabled={productsCount <= page * 10} data-variant='primary'>
           Next
         </button>
       </div>

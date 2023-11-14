@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import style from './index.module.css';
+import style from './index.module.scss';
 import Portal from '@/components/shared/Portal';
 import useHandleOutsideClick from '@/hooks/useHandleOutsideClick';
 

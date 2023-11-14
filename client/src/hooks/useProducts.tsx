@@ -1,6 +1,6 @@
 import { ProductResponse } from '@/types';
 import { useState, useEffect } from 'react';
-import useAxios from './useAxios';
+import useAxios, { AxiosResponse } from './useAxios';
 
 const useProducts = (page: number) => {
   const [products, setProducts] = useState<ProductResponse | null>(null);
@@ -11,7 +11,7 @@ const useProducts = (page: number) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await api(`/products?page=${page}&limit=10`);
+        const { data }: AxiosResponse<ProductResponse> = await api(`/products?page=${page}&limit=10`);
         setProducts(data);
       } catch (error) {
         setError(error as Error);
@@ -23,7 +23,13 @@ const useProducts = (page: number) => {
     fetchProducts();
   }, [page, api]);
 
-  return { products: products?.data || [], loading, error };
+  return {
+    products: products?.data || [],
+    loading,
+    error,
+    totalPages: products?.totalPages || 0,
+    productsCount: products?.productsCount || 0,
+  };
 };
 
 export default useProducts;

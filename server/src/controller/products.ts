@@ -9,6 +9,7 @@ import {
 } from '../service/products';
 import { Messages, VALID_COINS } from '../constants';
 import { findAndUpdateUser, findUser } from '../service/users';
+import ProductModel from '../model/products';
 
 export const createProductController = async (req: Request, res: Response) => {
   try {
@@ -137,7 +138,7 @@ export const getAllProductsController = async (req: Request, res: Response) => {
   try {
     const { page = 1, limit = 10 } = req.query;
     const products = await findAllProducts(Number(page), Number(limit));
-    const count = products.length;
+    const count = await ProductModel.countDocuments();
 
     return res.json({
       status: 200,

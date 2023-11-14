@@ -18,6 +18,8 @@ export interface ProductNavigation {
 export interface ProductResponse extends ProductNavigation {
   status: number;
   message: string;
+  productsCount: number;
+  totalPages: number;
   data: Product[];
 }
 
@@ -36,4 +38,10 @@ export interface ProductFormFields {
 export interface ProductTableProps extends ProductFormFields {
   productId: string;
   user: { username: string; _id: string };
+}
+
+export interface ModalPageDetails {
+  redirectTo?: string;
+  title?: string;
+  confirmAction?: () => void;
 }

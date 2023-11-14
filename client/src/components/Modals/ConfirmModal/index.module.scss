@@ -1,0 +1,17 @@
+.delete {
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.delete__header {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.delete__footer {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 2rem;
+}

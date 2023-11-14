@@ -4,13 +4,16 @@ import useAxios from '@/hooks/useAxios';
 import { useToastContext } from '@/contexts/toast';
 import { formatDate, capitalize } from '@/helpers/utils';
 import s from './index.module.scss';
+import { useModalContext } from '@/contexts/modals';
 
 const Profile = () => {
   const { user, setUser, sessionCleanup } = useAuthContext();
   const { showToast } = useToastContext();
+  const { api, apiErrorHandler } = useAxios();
+  const { openModal } = useModalContext();
+
   const [deposit, setDeposit] = useState(5);
   const [editing, setEditing] = useState(false);
-  const { api, apiErrorHandler } = useAxios();
 
   const handleDeposit = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDeposit(Number(e.target.value));
@@ -49,6 +52,30 @@ const Profile = () => {
     }
   };
 
+  const handleBalanceReset = async () => {
+    try {
+      await api.put('/users/deposit/reset');
+      user && setUser({ ...user, deposit: 0 });
+      showToast([{ message: 'Balance reset to 0', mode: 'success' }]);
+    } catch (error) {
+      apiErrorHandler(error);
+    }
+  };
+
+  const handleOpenResetModal = () => {
+    openModal(true, {
+      title: 'Are you sure? This will reset your balance to 0.',
+      confirmAction: handleBalanceReset,
+    });
+  };
+
+  const handleOpenDeleteModal = () => {
+    openModal(true, {
+      title: 'Are you sure? This will delete your account and all your data.',
+      confirmAction: handleAccountDelete,
+    });
+  };
+
   return (
     <section className={s.profile}>
       <h2>{user?.username}</h2>
@@ -84,10 +111,20 @@ const Profile = () => {
           </div>
         </div>
       )}
+      {user?.role === 'buyer' && (
+        <div className={s.profile__section}>
+          <h3>Reset balance</h3>
+          <div className={s.profile__section__row}>
+            <button data-variant='danger-outline' onClick={handleOpenResetModal}>
+              Reset
+            </button>
+          </div>
+        </div>
+      )}
       <div className={s.profile__section}>
         <h3>Delete my account</h3>
         <div className={s.profile__section__row}>
-          <button data-variant='danger' onClick={handleAccountDelete}>
+          <button data-variant='danger' onClick={handleOpenDeleteModal}>
             Delete
           </button>
         </div>

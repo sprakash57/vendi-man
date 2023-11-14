@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import s from './index.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProductForm from '../ProductForm';
 import { useToastContext } from '@/contexts/toast';
 import useAxios from '@/hooks/useAxios';
@@ -8,6 +8,8 @@ import useAxios from '@/hooks/useAxios';
 const AddProduct = () => {
   const { showToast } = useToastContext();
   const { api, apiErrorHandler } = useAxios();
+  const navigate = useNavigate();
+
   const [product, setProduct] = useState({
     productName: '',
     cost: 0,
@@ -17,7 +19,8 @@ const AddProduct = () => {
   const handleAddProduct = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      await api.post('/products', product);
+      const { data } = await api.post('/products', product);
+      navigate(`/products/${data.data.productId}`);
       showToast([{ message: 'Product added successfully', mode: 'success' }]);
     } catch (e: unknown) {
       apiErrorHandler(e);

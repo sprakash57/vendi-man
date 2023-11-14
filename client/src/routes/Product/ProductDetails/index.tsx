@@ -9,6 +9,7 @@ import Spinner from '@/components/Spinner';
 import { formatDate } from '@/helpers/utils';
 import useFetchProfile from '@/hooks/useFetchProfile';
 import { useToastContext } from '@/contexts/toast';
+import { useModalContext } from '@/contexts/modals';
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,6 +18,7 @@ const ProductDetails = () => {
   const { fetchProfile } = useFetchProfile();
   const { showToast } = useToastContext();
   const navigate = useNavigate();
+  const { openModal } = useModalContext();
 
   const [product, setProduct] = useState<ProductDetailsResponse | null>(null);
   const [editing, setEditing] = useState(false);
@@ -31,7 +33,7 @@ const ProductDetails = () => {
     setQuantity(parseFloat(e.target.value));
   }, []);
 
-  const handleDelete = useCallback(async () => {
+  const handleConfirmDelete = useCallback(async () => {
     try {
       await api.delete(`/products/${id}`);
       showToast([{ message: 'Product deleted successfully', mode: 'success' }]);
@@ -40,6 +42,13 @@ const ProductDetails = () => {
       apiErrorHandler(error);
     }
   }, [api, id, apiErrorHandler, showToast, navigate]);
+
+  const handleDelete = useCallback(() => {
+    openModal(true, {
+      title: 'Are you sure? This action cannot be undone.',
+      confirmAction: handleConfirmDelete,
+    });
+  }, [openModal, handleConfirmDelete]);
 
   const fetchProductDetails = useCallback(async () => {
     const { data } = await api<ProductDetailsResponse>(`/products/${id}`);
@@ -60,7 +69,6 @@ const ProductDetails = () => {
           const { data } = await api.put<ProductDetailsResponse>(`/products/${id}`, newProduct);
           setProduct(data);
           setEditing(false);
-          setNewProduct({ productName: '', cost: 0, amountAvailable: 0 });
           showToast([{ message: 'Product updated successfully', mode: 'success' }]);
         } catch (error) {
           apiErrorHandler(error);
