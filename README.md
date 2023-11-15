@@ -38,13 +38,14 @@ Import `Vendi-Man.postman_collection.json` to your postman.
 | -------------------------- | ------ | ---------------------- |
 | `/`                        | GET    | Health check           |
 | `/users`                   | POST   | Create a new user      |
-| `/users/profile`           | GET    | Get user details       |
+| `/users`                   | GET    | Get user details       |
 | `/users/deposit`           | POST   | Add deposit amount     |
-| `/users/deposit`           | DELETE | Reset deposit amount   |
+| `/users/deposit/reset`     | PUT    | Reset deposit amount   |
 | `/sessions`                | POST   | Create a new session   |
 | `/sessions`                | GET    | Get session details    |
 | `/sessions/logout`         | PUT    | Delete current session |
 | `/sessions/logout/all`     | PUT    | Delete all sessions    |
+| `/sessions/refresh`        | POST   | Get access token       |
 | `/products`                | POST   | Add new product        |
 | `/products`                | GET    | Get all products       |
 | `/products/:productId`     | GET    | Get product details    |
@@ -54,6 +55,7 @@ Import `Vendi-Man.postman_collection.json` to your postman.
 
 ## Improvement areas
 
-- Better client. Right now frontend is not complete and it needs more time and effort.
-- More test cases.
-- Enhanced security.
+- ~~Whitelist urls to avoid CORS issue~~
+- ~~Include Content Security Policy~~
+- Clients need to refresh browser to avoid seeing unauthorized access due to expired token
+- More test cases

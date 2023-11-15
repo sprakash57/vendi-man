@@ -17,7 +17,6 @@ const useAxios = () => {
     const requestIntercept = api.interceptors.request.use(
       config => {
         if (Object.keys(tokens).length === 0) return config;
-        console.log(config);
         if (!config.headers['Authorization'] || !config.url?.includes('/sessions')) {
           config.headers['Authorization'] = `Bearer ${tokens?.accessToken}`;
         }
@@ -29,7 +28,6 @@ const useAxios = () => {
     const responseIntercept = api.interceptors.response.use(
       response => response,
       async error => {
-        console.log(error.config);
         const prevRequest = error?.config;
         if (error?.response?.status === 401 && !prevRequest?._retry) {
           prevRequest._retry = true;
@@ -38,7 +36,6 @@ const useAxios = () => {
               refreshToken: tokens?.refreshToken,
             });
             localStorage.setItem('tokens', JSON.stringify(response.data));
-            console.log(response.data.accessToken);
             prevRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
             return api(prevRequest);
           } catch (error) {

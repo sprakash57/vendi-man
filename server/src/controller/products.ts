@@ -30,11 +30,11 @@ export const updateProductController = async (req: Request, res: Response) => {
     const product = await findProduct({ productId });
 
     if (!product) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
+      return res.status(404).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
     // Stop user from updating product that does not belong to them
     if (String(product.user._id) !== sellerId) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_SELLER });
+      return res.status(404).json({ status: 'error', message: Messages.NO_OWNER });
     }
 
     const updatedProduct = await findAndUpdateProduct({ productId }, update, {
@@ -52,7 +52,7 @@ export const getProductController = async (req: Request, res: Response) => {
     const productId = req.params.productId;
     const product = await findProduct({ productId });
     if (!product) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
+      return res.status(404).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
     return res.json({ status: 'success', message: Messages.SUCCESS, data: product });
   } catch (error: any) {
@@ -68,11 +68,11 @@ export const deleteProductController = async (req: Request, res: Response) => {
     const product = await findProduct({ productId });
 
     if (!product) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
+      return res.status(404).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
     // Stop user from updating product that does not belong to them
     if (String(product.user._id) !== sellerId) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_SELLER });
+      return res.status(404).json({ status: 'error', message: Messages.NO_OWNER });
     }
 
     await deleteProduct({ productId });
@@ -92,7 +92,7 @@ export const buyProductController = async (req: Request, res: Response) => {
     const product = await findProduct({ productId });
 
     if (!product) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
+      return res.status(404).json({ status: 'error', message: Messages.NO_PRODUCT });
     }
 
     if (user.deposit == 0) {
@@ -123,7 +123,7 @@ export const buyProductController = async (req: Request, res: Response) => {
       { new: true },
     );
 
-    return res.json({
+    return res.status(201).json({
       status: 'success',
       message: Messages.SUCCESS,
       data: {

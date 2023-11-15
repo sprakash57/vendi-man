@@ -6,6 +6,7 @@ export enum Messages {
   ACCOUNT_DELETED = 'Account has been deleted',
   NO_BUYER = 'User is not a buyer',
   NO_SELLER = 'User is not a seller',
+  NO_OWNER = 'User is not the owner of the product',
   EXPIRED_SESSION = 'Session expired',
   DUPLICATE_SESSION = 'There is already an active session using your account',
   INSUFFICIENT_DEPOSIT = 'Insufficient Deposit',
