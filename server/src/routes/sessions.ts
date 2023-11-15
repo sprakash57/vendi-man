@@ -18,8 +18,8 @@ router.get('/', userVerification, getSessionController);
 
 router.post('/refresh', refreshTokenController);
 
-router.put('/logout', userVerification, deleteSessionController);
+router.delete('/logout', userVerification, deleteSessionController);
 
-router.put('/logout/all', userVerification, deleteAllSessionController);
+router.delete('/logout/all', userVerification, deleteAllSessionController);
 
 export default router;

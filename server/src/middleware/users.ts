@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { body } from 'express-validator';
-import { Messages, VALID_COINS } from '../constants';
+import { Messages } from '../constants';
 
 export const depositValidator = [
   body('depositAmount')
     .isInt({ min: 0, max: 100 })
     .withMessage('Deposit amount must be an integer between 0 and 100')
     .custom(value => {
-      if (value % VALID_COINS[0] !== 0 && value !== 0) {
-        throw new Error(`Deposit amount must be in multiple of ${VALID_COINS[0]}`);
+      if (value % 5 !== 0 && value !== 0) {
+        throw new Error(`Deposit amount must be in multiple of ${5}`);
       }
       return true;
     }),
@@ -27,32 +27,25 @@ export const userValidator = [
   ...depositValidator,
 ];
 
-export const userVerification = (req: Request, res: Response, next: NextFunction) => {
+export const userVerification = (_req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
   if (!user) {
-    return res.status(401).json({
-      status: 'error',
-      message: 'Unauthorized',
-    });
+    return res.status(401).json({ status: 'error', message: Messages.EXPIRED_SESSION });
   }
   return next();
 };
 
 export const buyerVerification = (_req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
-  if (!user) {
-    return res.status(401).json({ status: 'error', message: Messages.EXPIRED_SESSION });
-  } else if (user.role !== 'buyer') {
+  if (user.role !== 'buyer') {
     return res.status(403).json({ status: 'error', message: Messages.NO_BUYER });
   }
   return next();
 };
 
-export const sellerVerification = (req: Request, res: Response, next: NextFunction) => {
+export const sellerVerification = (_req: Request, res: Response, next: NextFunction) => {
   const user = res.locals.user;
-  if (!user) {
-    return res.status(401).json({ status: 'error', message: Messages.EXPIRED_SESSION });
-  } else if (user.role !== 'seller') {
+  if (user.role !== 'seller') {
     return res.status(403).json({ status: 'error', message: Messages.NO_SELLER });
   }
   return next();

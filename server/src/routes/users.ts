@@ -19,6 +19,6 @@ router.delete('/', userVerification, deleteUserController);
 
 router.post('/deposit', [...validate(depositValidator), userVerification], depositController);
 
-router.put('/deposit/reset', buyerVerification, resetDepositController);
+router.delete('/deposit/reset', [userVerification, buyerVerification], resetDepositController);
 
 export default router;

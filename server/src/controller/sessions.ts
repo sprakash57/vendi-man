@@ -34,7 +34,7 @@ export const createSessionController = async (req: Request, res: Response) => {
       expiresIn: config.get('refreshTokenValidity'),
     });
 
-    return res.json({
+    return res.status(201).json({
       status: 'success',
       message: Messages.SUCCESS,
       data: { message: sessions.length ? Messages.DUPLICATE_SESSION : '', accessToken, refreshToken },

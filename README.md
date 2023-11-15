@@ -39,8 +39,9 @@ Import `Vendi-Man.postman_collection.json` to your postman.
 | `/`                        | GET    | Health check           |
 | `/users`                   | POST   | Create a new user      |
 | `/users`                   | GET    | Get user details       |
+| `/users`                   | DELETE | Delete user details    |
 | `/users/deposit`           | POST   | Add deposit amount     |
-| `/users/deposit/reset`     | PUT    | Reset deposit amount   |
+| `/users/deposit/reset`     | DELETE | Reset deposit amount   |
 | `/sessions`                | POST   | Create a new session   |
 | `/sessions`                | GET    | Get session details    |
 | `/sessions/logout`         | PUT    | Delete current session |
@@ -58,4 +59,4 @@ Import `Vendi-Man.postman_collection.json` to your postman.
 - ~~Whitelist urls to avoid CORS issue~~
 - ~~Include Content Security Policy~~
 - Clients need to refresh browser to avoid seeing unauthorized access due to expired token
-- More test cases
+- Store list of transactions for buyers and sellers

@@ -12,6 +12,7 @@ const authAndRefreshToken = async (req: Request, res: Response, next: NextFuncti
   if (jwtPayload) {
     // Check if session is valid for the user
     const sessionIsValid = await checkSession(jwtPayload);
+
     if (sessionIsValid) {
       // Set user information to res.locals
       res.locals.user = jwtPayload;

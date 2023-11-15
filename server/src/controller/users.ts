@@ -50,7 +50,7 @@ export const deleteUserController = async (_req: Request, res: Response) => {
   try {
     const userId = res.locals.user._id;
     await deleteUser(userId);
-    return res.status(201).json({ status: 'success', message: Messages.ACCOUNT_DELETED });
+    return res.status(204).json({ status: 'success', message: Messages.ACCOUNT_DELETED });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
@@ -63,7 +63,7 @@ export const depositController = async (req: Request, res: Response) => {
     const newDeposit = req.body.depositAmount + user?.deposit;
     const updatedUser = await findAndUpdateUser({ _id: user?._id }, { deposit: newDeposit }, { new: true });
     const data = omit(updatedUser?.toJSON(), ['password', '_id']);
-    return res.json({ status: 'success', message: Messages.SUCCESS, data: data });
+    return res.status(201).json({ status: 'success', message: Messages.SUCCESS, data: data });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
