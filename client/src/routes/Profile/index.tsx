@@ -22,7 +22,7 @@ const Profile = () => {
   const handleConfirmDeposit = async () => {
     if (user) {
       try {
-        const { data: depositData } = await api.post('/users/deposit', { depositAmount: deposit });
+        const { data: depositData } = await api.post('/users/deposit', { deposit });
         setUser({ ...user, deposit: depositData.data.deposit });
         showToast([{ message: 'Balance updated', mode: 'success' }]);
         setEditing(false);
@@ -35,7 +35,7 @@ const Profile = () => {
   const handleAccountDelete = async () => {
     try {
       const { data: responseData } = await api.delete('/users');
-      showToast([{ message: responseData.message || 'Success', mode: 'success' }]);
+      showToast([{ message: responseData.message, mode: 'success' }]);
       sessionCleanup();
     } catch (error) {
       apiErrorHandler(error);

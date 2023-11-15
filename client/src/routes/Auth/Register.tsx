@@ -11,7 +11,7 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     role: 'buyer',
-    depositAmount: 0,
+    deposit: 0,
   });
   const { showToast } = useToastContext();
   const navigate = useNavigate();
@@ -67,14 +67,8 @@ const Register = () => {
             </div>
           </div>
           <div className={s.form__deposit}>
-            <label>Deposit: {userData.depositAmount || ''}</label>
-            <input
-              placeholder='Deposit'
-              type='number'
-              name='depositAmount'
-              value={userData.depositAmount}
-              onChange={handleChange}
-            />
+            <label>Deposit: {userData.deposit || ''}</label>
+            <input placeholder='Deposit' type='number' name='deposit' value={userData.deposit} onChange={handleChange} />
             <small>*Amount should be multiple of 5 and less than 101</small>
           </div>
           <hr className={s.divider} />

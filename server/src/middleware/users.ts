@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 import { Messages } from '../constants';
 
 export const depositValidator = [
-  body('depositAmount')
+  body('deposit')
     .isInt({ min: 0, max: 100 })
     .withMessage('Deposit amount must be an integer between 0 and 100')
     .custom(value => {

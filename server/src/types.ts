@@ -9,7 +9,7 @@ export type UserCreationInput = Omit<
 >;
 
 export type DepositValidatorInput = {
-  depositAmount: number;
+  deposit: number;
 };
 
 export type SessionInput = {

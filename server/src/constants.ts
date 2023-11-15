@@ -14,9 +14,6 @@ export enum Messages {
   NO_PRODUCT = 'Product Not Found',
   INVALID_PRODUCT_QUANTITY = 'Invalid Product Quantity',
   SUCCESS = 'Success',
-  STATUS_400 = 'Bad request',
-  STATUS_401 = 'Not authorized',
-  STATUS_403 = 'Forbidden',
   STATUS_500 = 'Internal server error',
 }
 

@@ -60,7 +60,7 @@ export const deleteUserController = async (_req: Request, res: Response) => {
 export const depositController = async (req: Request, res: Response) => {
   try {
     const user = await findUser({ _id: res.locals.user._id });
-    const newDeposit = req.body.depositAmount + user?.deposit;
+    const newDeposit = req.body.deposit + user?.deposit;
     const updatedUser = await findAndUpdateUser({ _id: user?._id }, { deposit: newDeposit }, { new: true });
     const data = omit(updatedUser?.toJSON(), ['password', '_id']);
     return res.status(201).json({ status: 'success', message: Messages.SUCCESS, data: data });
@@ -70,7 +70,7 @@ export const depositController = async (req: Request, res: Response) => {
   }
 };
 
-export const resetDepositController = async (_: Request, res: Response) => {
+export const resetDepositController = async (_req: Request, res: Response) => {
   try {
     const userId = res.locals.user._id;
     const updatedUser = await findAndUpdateUser({ _id: userId }, { deposit: 0 }, { new: true });

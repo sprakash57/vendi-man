@@ -6,10 +6,11 @@
 
 - Node.js
 - Express.js
+- React.js
 - TypeScript
 - MongoDB
 - Mongoose
-- React.js
+- Axios
 
 ## Prerequisites
 
@@ -37,22 +38,22 @@ Import `Vendi-Man.postman_collection.json` to your postman.
 | Endpoint                   | Method | Description            |
 | -------------------------- | ------ | ---------------------- |
 | `/`                        | GET    | Health check           |
-| `/users`                   | POST   | Create a new user      |
 | `/users`                   | GET    | Get user details       |
+| `/users`                   | POST   | Create a new user      |
 | `/users`                   | DELETE | Delete user details    |
 | `/users/deposit`           | POST   | Add deposit amount     |
 | `/users/deposit/reset`     | DELETE | Reset deposit amount   |
-| `/sessions`                | POST   | Create a new session   |
 | `/sessions`                | GET    | Get session details    |
-| `/sessions/logout`         | PUT    | Delete current session |
-| `/sessions/logout/all`     | PUT    | Delete all sessions    |
+| `/sessions`                | POST   | Create a new session   |
 | `/sessions/refresh`        | POST   | Get access token       |
-| `/products`                | POST   | Add new product        |
+| `/sessions/logout`         | DELETE | Delete current session |
+| `/sessions/logout/all`     | DELETE | Delete all sessions    |
 | `/products`                | GET    | Get all products       |
 | `/products/:productId`     | GET    | Get product details    |
+| `/products`                | POST   | Add new product        |
+| `/products/:productId/buy` | POST   | Buy a product          |
 | `/products/:productId`     | PUT    | Update product details |
 | `/products/:productId`     | DELETE | Delete product         |
-| `/products/:productId/buy` | POST   | Buy a product          |
 
 ## Improvement areas
 

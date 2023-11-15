@@ -10,7 +10,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     const { refreshToken } = req.body;
     const result = await getNewAccessToken(refreshToken);
     if (!result) return res.status(403).json({ status: 'error', message: Messages.INVALID_REFRESH_TOKEN });
-    return res.json({ ...result, refreshToken });
+    return res.status(201).json({ ...result, refreshToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
@@ -45,7 +45,7 @@ export const createSessionController = async (req: Request, res: Response) => {
   }
 };
 
-export const getSessionController = async (req: Request, res: Response) => {
+export const getSessionController = async (_req: Request, res: Response) => {
   try {
     const userId = res.locals.user._id;
     const sessions = await findSessions({ user: userId, valid: true });
@@ -65,14 +65,7 @@ export const deleteSessionController = async (_req: Request, res: Response) => {
     const sessionId = res.locals.user.session;
     await updateSession({ _id: sessionId }, { valid: false });
     res.locals = {};
-    return res.status(201).json({
-      status: 'success',
-      message: Messages.LOGOUT_SUCCESS,
-      data: {
-        accessToken: null,
-        refreshToken: null,
-      },
-    });
+    return res.status(204).json({ status: 'success', message: Messages.LOGOUT_SUCCESS });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });
@@ -86,7 +79,7 @@ export const deleteAllSessionController = async (_req: Request, res: Response) =
       await updateSession({ _id: session._id }, { valid: false });
     });
     res.locals = {};
-    return res.json({ status: 'success', message: Messages.LOGOUT_SUCCESS });
+    return res.status(204).json({ status: 'success', message: Messages.LOGOUT_SUCCESS });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });

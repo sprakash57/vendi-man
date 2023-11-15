@@ -77,7 +77,7 @@ export const deleteProductController = async (req: Request, res: Response) => {
 
     await deleteProduct({ productId });
 
-    return res.status(204).json({ status: 'success', message: Messages.SUCCESS });
+    return res.sendStatus(204);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: 'error', message: Messages.STATUS_500 });

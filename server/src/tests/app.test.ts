@@ -25,13 +25,13 @@ describe('Buyer', () => {
   });
 
   it('should accept valid deposit amount', async () => {
-    const response = await axios.post(`${testUrl}/users/deposit`, { depositAmount }, { headers });
+    const response = await axios.post(`${testUrl}/users/deposit`, { deposit: depositAmount }, { headers });
     expect(response.status).toEqual(201);
   });
 
   it('should reject invalid deposit amount', async () => {
     try {
-      await axios.post(`${testUrl}/users/deposit`, { depositAmount: invalidAmount }, { headers });
+      await axios.post(`${testUrl}/users/deposit`, { deposit: invalidAmount }, { headers });
     } catch (e: unknown) {
       const err = e as AxiosError;
       expect(err.response?.data).toHaveProperty('errors');

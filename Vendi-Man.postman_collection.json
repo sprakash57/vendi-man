@@ -33,32 +33,6 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "New User",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"seller2\",\r\n    \"password\": \"123456\",\r\n    \"confirmPassword\": \"123456\",\r\n    \"role\": \"seller\",\r\n    \"depositAmount\": 10\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/users",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get User",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -98,6 +72,32 @@
 					"response": []
 				},
 				{
+					"name": "New User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"buyer4\",\r\n    \"password\": \"123456\",\r\n    \"confirmPassword\": \"123456\",\r\n    \"role\": \"buyer\",\r\n    \"deposit\": 90\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Deposit",
 					"request": {
 						"auth": {
@@ -114,7 +114,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"depositAmount\": 100\r\n}",
+							"raw": "{\r\n    \"deposit\": 100\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -135,7 +135,7 @@
 					"response": []
 				},
 				{
-					"name": "Clear Deposit",
+					"name": "Reset Deposit",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -147,7 +147,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -205,39 +205,6 @@
 			"name": "Sessions",
 			"item": [
 				{
-					"name": "New Session",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-refresh",
-								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ5MzJhOTc3YjRmMTg2OTA0M2Y4ZWQiLCJ1c2VybmFtZSI6InN1bm55Iiwicm9sZSI6ImJ1eWVyIiwiZGVwb3NpdCI6MjAwLCJjcmVhdGVkQXQiOiIyMDIzLTExLTA2VDE4OjM4OjMzLjY4OVoiLCJ1cGRhdGVkQXQiOiIyMDIzLTExLTA2VDE4OjM4OjMzLjY4OVoiLCJfX3YiOjAsInNlc3Npb24iOiI2NTQ5NjQ0YWI3MzdiMzQ2YjNmZGFkZTQiLCJpYXQiOjE2OTkzMDg2MTgsImV4cCI6MTczMDg2NjIxOH0.ADwzOBN8Kb3Dzbqge8rbia-Ep0qEHU9UOwioxwbPq68tI81VBX1TBWBbWjUqwjNX4lEWRjAVxCLOAOn5lBHwWYxJj6MaKTApOZQZKuOGmVZmM6-kR2J6TJT8Uin4GLGji7jbB75wBHnjkT3DDNzhxP7zJ69F0TmuayRwl03EYnc8nMPsdC-q3WIgsnxsuGxrvKEWiT_uLj29keK11ggVmRsVVOTzamXGPMY7ou8tuPsgDkm-W7mPduRvuoAi2ujBHwl4qBmjKX5sbfxAeEGWiiFl-1U9JkySzkpF5EsUTUCWwNGPVe4NMDuI6WW8PrVo-o98nnChpDv8L47zHaYNRg",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"buyer2\",\r\n    \"password\": \"123456\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/sessions",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"sessions"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Session",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -277,6 +244,76 @@
 					"response": []
 				},
 				{
+					"name": "New Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-refresh",
+								"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ5MzJhOTc3YjRmMTg2OTA0M2Y4ZWQiLCJ1c2VybmFtZSI6InN1bm55Iiwicm9sZSI6ImJ1eWVyIiwiZGVwb3NpdCI6MjAwLCJjcmVhdGVkQXQiOiIyMDIzLTExLTA2VDE4OjM4OjMzLjY4OVoiLCJ1cGRhdGVkQXQiOiIyMDIzLTExLTA2VDE4OjM4OjMzLjY4OVoiLCJfX3YiOjAsInNlc3Npb24iOiI2NTQ5NjQ0YWI3MzdiMzQ2YjNmZGFkZTQiLCJpYXQiOjE2OTkzMDg2MTgsImV4cCI6MTczMDg2NjIxOH0.ADwzOBN8Kb3Dzbqge8rbia-Ep0qEHU9UOwioxwbPq68tI81VBX1TBWBbWjUqwjNX4lEWRjAVxCLOAOn5lBHwWYxJj6MaKTApOZQZKuOGmVZmM6-kR2J6TJT8Uin4GLGji7jbB75wBHnjkT3DDNzhxP7zJ69F0TmuayRwl03EYnc8nMPsdC-q3WIgsnxsuGxrvKEWiT_uLj29keK11ggVmRsVVOTzamXGPMY7ou8tuPsgDkm-W7mPduRvuoAi2ujBHwl4qBmjKX5sbfxAeEGWiiFl-1U9JkySzkpF5EsUTUCWwNGPVe4NMDuI6WW8PrVo-o98nnChpDv8L47zHaYNRg",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"seller2\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sessions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sessions/refresh",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sessions",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete session",
 					"request": {
 						"auth": {
@@ -289,7 +326,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -326,7 +363,7 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -350,134 +387,12 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Refresh",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/sessions/refresh",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"sessions",
-								"refresh"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
 			"name": "Products",
 			"item": [
-				{
-					"name": "Create Product",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-refresh",
-								"value": "{{refreshToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"productName\": \"Keks\", \r\n    \"cost\": 25,    \r\n    \"amountAvailable\": 30\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/products",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Product",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "x-refresh",
-								"value": "{{refreshToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"productName\": \"Cola\", \r\n    \"cost\": 10,    \r\n    \"amountAvailable\": 90\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/products/620002b7310a",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"products",
-								"620002b7310a"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get Product",
 					"protocolProfileBehavior": {
@@ -512,13 +427,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products/84c6ab4504f2",
+							"raw": "{{base_url}}/products/a11801c749d3",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"84c6ab4504f2"
+								"a11801c749d3"
 							]
 						}
 					},
@@ -564,6 +479,129 @@
 					"response": []
 				},
 				{
+					"name": "Create Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-refresh",
+								"value": "{{refreshToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productName\": \"Burger\", \r\n    \"cost\": 25,    \r\n    \"amountAvailable\": 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"quantityToBeBought\": 6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/a11801c749d3/buy",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"a11801c749d3",
+								"buy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-refresh",
+								"value": "{{refreshToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productName\": \"Cola\", \r\n    \"cost\": 10,    \r\n    \"amountAvailable\": 90\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/products/a11801c749d3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								"a11801c749d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Product",
 					"request": {
 						"auth": {
@@ -588,51 +626,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products/a2533c107d3c",
+							"raw": "{{base_url}}/products/4b1307cdf228",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"products",
-								"a2533c107d3c"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Buy Product",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"quantityToBeBought\": 2\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/products/4b1307cdf228/buy",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"products",
-								"4b1307cdf228",
-								"buy"
+								"4b1307cdf228"
 							]
 						}
 					},
