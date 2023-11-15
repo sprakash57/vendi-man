@@ -23,7 +23,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState<ProductDetailsResponse | null>(null);
   const [editing, setEditing] = useState(false);
   const [buying, setBuying] = useState(false);
-  const [quantity, setQuantity] = useState<string | number>(0);
+  const [quantity, setQuantity] = useState<string | number>('');
   const [newProduct, setNewProduct] = useState<ProductFormFields>({ productName: '', cost: 0, amountAvailable: 0 });
 
   const isProductOwner = useMemo(() => product?.data.user?._id === user?._id, [product, user]);
@@ -162,7 +162,8 @@ const ProductDetails = () => {
         <div>
           <hr />
           <label className={s.details__field} htmlFor='deposit'>
-            Enter quantity to buy: <input id='deposit' type='number' value={quantity} onChange={handleQuantityToBuy} />
+            Enter quantity to buy:{' '}
+            <input id='deposit' type='number' value={quantity as number} onChange={handleQuantityToBuy} />
           </label>
         </div>
       )}

@@ -11,7 +11,7 @@ const ProductTable = ({ products }: { products: ProductTableProps[] }) => {
         <tr className={s.table__header}>
           <th>Name</th>
           <th>Amount available</th>
-          <th>Cost</th>
+          <th>Cost (€)</th>
           <th>Seller</th>
         </tr>
       </thead>

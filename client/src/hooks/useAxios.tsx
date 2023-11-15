@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useToastContext } from '@/contexts/toast';
+import { useAuthContext } from '@/contexts/auth';
+import { useNavigate } from 'react-router-dom';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -11,6 +13,8 @@ const api = axios.create({
 
 const useAxios = () => {
   const { showToast } = useToastContext();
+  const { sessionCleanup } = useAuthContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
@@ -39,7 +43,10 @@ const useAxios = () => {
             prevRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
             return api(prevRequest);
           } catch (error) {
-            return Promise.reject(error);
+            if ((error as AxiosError).response?.status === 403) {
+              sessionCleanup();
+              navigate('/login');
+            }
           }
         }
         return Promise.reject(error);

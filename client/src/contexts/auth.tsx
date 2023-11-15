@@ -94,8 +94,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      const { data: responseData }: AxiosResponse<LoginResponse> = await api.put('/sessions/logout');
-      showToast([{ message: responseData.message || 'Success', mode: 'success' }]);
+      await api.delete('/sessions/logout');
+      showToast([{ message: 'Success', mode: 'success' }]);
     } catch (e) {
       apiErrorHandler(e);
     } finally {

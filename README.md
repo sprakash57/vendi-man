@@ -59,5 +59,5 @@ Import `Vendi-Man.postman_collection.json` to your postman.
 
 - ~~Whitelist urls to avoid CORS issue~~
 - ~~Include Content Security Policy~~
-- Clients need to refresh browser to avoid seeing unauthorized access due to expired token
+- Add filter by seller name feature and can be triggered by a toggle button on client
 - Store list of transactions for buyers and sellers

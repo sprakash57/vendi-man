@@ -44,7 +44,7 @@ const Profile = () => {
 
   const handleLogoutAll = async () => {
     try {
-      const { data: responseData } = await api.put('/sessions/logout/all');
+      const { data: responseData } = await api.delete('/sessions/logout/all');
       showToast([{ message: responseData.message || 'Success', mode: 'success' }]);
       sessionCleanup();
     } catch (error) {
@@ -54,7 +54,7 @@ const Profile = () => {
 
   const handleBalanceReset = async () => {
     try {
-      await api.put('/users/deposit/reset');
+      await api.delete('/users/deposit/reset');
       user && setUser({ ...user, deposit: 0 });
       showToast([{ message: 'Balance reset to 0', mode: 'success' }]);
     } catch (error) {

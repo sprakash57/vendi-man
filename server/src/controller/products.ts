@@ -100,7 +100,7 @@ export const buyProductController = async (req: Request, res: Response) => {
     }
 
     if (product.amountAvailable == 0) {
-      return res.status(400).json({ status: 'error', message: Messages.NO_PRODUCT });
+      return res.status(400).json({ status: 'error', message: Messages.UNAVAILABLE_PRODUCT });
     }
 
     if (!(product.amountAvailable >= req.body?.quantityToBeBought)) {

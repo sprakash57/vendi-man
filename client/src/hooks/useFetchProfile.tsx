@@ -1,5 +1,5 @@
 import { User, useAuthContext } from '@/contexts/auth';
-import useAxios, { AxiosResponse } from './useAxios';
+import useAxios, { AxiosResponse } from '@/hooks/useAxios';
 
 const useFetchProfile = () => {
   const { setUser } = useAuthContext();
