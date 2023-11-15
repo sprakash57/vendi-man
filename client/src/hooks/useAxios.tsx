@@ -17,11 +17,11 @@ const useAxios = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
     const requestIntercept = api.interceptors.request.use(
       config => {
+        const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
         if (Object.keys(tokens).length === 0) return config;
-        if (!config.headers['Authorization'] || !config.url?.includes('/sessions')) {
+        if (!config.url?.includes('/sessions')) {
           config.headers['Authorization'] = `Bearer ${tokens?.accessToken}`;
         }
         return config;
@@ -33,17 +33,19 @@ const useAxios = () => {
       response => response,
       async error => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 401 && !prevRequest?._retry) {
-          prevRequest._retry = true;
+        if (error?.response?.status === 401 && !prevRequest?.sent) {
+          prevRequest.sent = true;
           try {
+            const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
             const response = await api.post('/sessions/refresh', {
               refreshToken: tokens?.refreshToken,
             });
-            localStorage.setItem('tokens', JSON.stringify(response.data));
             prevRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
+            localStorage.setItem('tokens', JSON.stringify(response.data));
             return api(prevRequest);
           } catch (error) {
-            if ((error as AxiosError).response?.status === 403) {
+            // If user logged out from all devices, redirect to login page
+            if ((error as AxiosError<{ message: string }>).response?.data.message === 'Invalid session') {
               sessionCleanup();
               navigate('/login');
             }
@@ -57,7 +59,7 @@ const useAxios = () => {
       api.interceptors.request.eject(requestIntercept);
       api.interceptors.response.eject(responseIntercept);
     };
-  }, []);
+  }, [navigate, sessionCleanup]);
 
   const apiErrorHandler = (e: unknown) => {
     const error = e as AxiosError<{ errors: { msg: string }[] } | { message: string }>;
