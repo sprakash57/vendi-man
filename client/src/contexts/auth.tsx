@@ -4,6 +4,7 @@ import { createContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToastContext } from './toast';
 import useAxios, { AxiosResponse } from '@/hooks/useAxios';
+import { FileMetadata } from '@/types';
 
 export interface User {
   _id: string;
@@ -33,6 +34,7 @@ interface LoginResponse {
 
 type AuthContextType = {
   user: User | null;
+  attachments: FileMetadata[];
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   login: (payload: LoginPayload) => void;
   logout: () => void;
@@ -41,6 +43,7 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  attachments: [] as FileMetadata[],
   setUser: () => {},
   login: () => {},
   logout: () => {},
@@ -54,6 +57,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { api, apiErrorHandler } = useAxios();
   const { showToast } = useToastContext();
 
+  const [attachments, setAttachments] = useState([]);
   const [user, setUser] = useState<User | null>(() => {
     const tokens = localStorage.getItem('tokens');
     if (tokens) {
@@ -112,13 +116,27 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const loadAttachments = async () => {
+    try {
+      const { data } = await api.get('/uploads');
+      setAttachments(data.files);
+    } catch (error) {
+      apiErrorHandler(error);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       loadProfile();
+      loadAttachments();
     }
   }, []);
 
-  return <AuthContext.Provider value={{ user, login, logout, setUser, sessionCleanup }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, attachments, login, logout, setUser, sessionCleanup }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export { useAuthContext, AuthContextProvider };

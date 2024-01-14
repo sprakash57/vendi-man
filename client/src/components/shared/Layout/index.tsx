@@ -23,6 +23,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <li>
               <Link to='/'>Products</Link>
             </li>
+            <li>
+              <Link to='/upload'>Upload</Link>
+            </li>
             <li role='button' onClick={handleLogout}>
               Logout
             </li>
