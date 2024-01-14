@@ -1,14 +1,6 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect, useRef } from 'react';
 import Portal from '@/components/shared/Portal';
 import { Toast } from '@/components/Toast';
-
-/**
- * [
-          { id: '1', mode: 'error', message: 'some dummy message' },
-          { id: '2', mode: 'error', message: 'some dummy message' },
-          { id: '3', mode: 'info', message: 'some dummy message' },
-        ]
- */
 
 interface ToastContent {
   message: string;
@@ -31,6 +23,7 @@ const useToastContext = () => useContext(ToastContext);
 
 const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const intervalId = useRef<number | undefined>();
 
   const showToast = (messages: ToastContent[]) => {
     const toasts = messages.map((m, i) => ({ id: `${Date.now()}${i}`, message: m.message, mode: m?.mode || 'error' }));
@@ -38,7 +31,7 @@ const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    intervalId.current = setInterval(() => {
       setToasts(prevToasts => {
         if (prevToasts.length > 0) {
           return prevToasts.slice(1);
@@ -46,7 +39,7 @@ const ToastProvider = ({ children }: { children: React.ReactNode }) => {
         return prevToasts;
       });
     }, 5000);
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalId.current);
   }, []);
 
   const handleClose = (id: string) => {

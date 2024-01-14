@@ -31,7 +31,7 @@ const Auth = () => {
     <>
       <Branding />
       <form className={s.form} onSubmit={handleLogin}>
-        <h3>Create Account</h3>
+        <h3>User login</h3>
         <div className={s.form__fields}>
           <input placeholder='Username' type='text' name='username' value={userData.username} onChange={handleChange} />
           <input placeholder='Password' type='password' name='password' value={userData.password} onChange={handleChange} />
