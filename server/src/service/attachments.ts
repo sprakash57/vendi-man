@@ -7,7 +7,7 @@ const attachmentParams = {
   Bucket: config.get('awsS3Bucket') as string,
 };
 
-export const uploadAttachment = async (files: Express.Multer.File[], userId: string) => {
+export const uploadAttachmentToS3 = async (files: Express.Multer.File[], userId: string) => {
   try {
     const uploadAttachmentPromises = files.map(async file => {
       const command = new PutObjectCommand({
@@ -27,7 +27,7 @@ export const uploadAttachment = async (files: Express.Multer.File[], userId: str
   }
 };
 
-export const getAttachments = async (userId: string) => {
+export const getAttachmentsFromS3 = async (userId: string) => {
   try {
     const data = await AttachmentModel.find({ user: userId });
     return data;
@@ -36,7 +36,7 @@ export const getAttachments = async (userId: string) => {
   }
 };
 
-export const deleteAttachment = async (userId: string, versionId: string) => {
+export const deleteAttachmentFromS3 = async (userId: string, versionId: string) => {
   try {
     const fileToBeDeleted = await AttachmentModel.findOne({ user: userId, versionId });
     if (fileToBeDeleted) {

@@ -1,17 +1,15 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import useAxios from '@/hooks/useAxios';
 import { FileMetadata } from '@/types';
-import { useAuthContext } from '@/contexts/auth';
 
 const Upload = () => {
-  const { attachments } = useAuthContext();
   const { apiErrorHandler, api } = useAxios();
   const [files, setFiles] = useState<FileList | null>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<FileMetadata[]>(attachments);
+  const [uploadedFiles, setUploadedFiles] = useState<FileMetadata[]>([]);
 
   const uploadFiles = async (files: FormData) => {
     try {
-      const { data } = await api.post('/uploads', files, {
+      const { data } = await api.post('/uploads/file', files, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -28,9 +26,11 @@ const Upload = () => {
     e.preventDefault();
     const formData = new FormData();
     if (files) {
+      formData.append('title', (e.currentTarget['title'] as unknown as HTMLInputElement).value);
       for (const file of files) {
         formData.append('files', file);
       }
+      console.log(files);
       uploadFiles(formData);
     }
   };
@@ -48,13 +48,10 @@ const Upload = () => {
     }
   };
 
-  useEffect(() => {
-    setUploadedFiles(attachments);
-  }, [attachments]);
-
   return (
     <section>
       <form onSubmit={handleSubmit}>
+        <input type='text' name='title' id='title' />
         <input type='file' name='attachment' id='attachment' multiple onChange={handleFileChange} />
         <button type='submit'>Upload</button>
       </form>
