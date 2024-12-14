@@ -45,3 +45,16 @@ export interface ModalPageDetails {
   title?: string;
   confirmAction?: () => void;
 }
+
+export interface FileMetadata {
+  _id: string;
+  fieldname: string;
+  originalname: string;
+  versionId: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+}

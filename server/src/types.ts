@@ -16,3 +16,12 @@ export type SessionInput = {
   username: string;
   password: string;
 };
+
+export interface FileMetadata {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  buffer: string;
+  size: number;
+}
